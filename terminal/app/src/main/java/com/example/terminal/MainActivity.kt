@@ -1,58 +1,107 @@
 package com.example.terminal
 
+import android.content.ActivityNotFoundException
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import com.example.terminal.databinding.ActivityMainBinding
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
+import java.util.*
+
+/* Utility top-level function */
+fun byteArrayToHex(ba: ByteArray): String {
+    val sb = StringBuilder(ba.size * 2)
+    for (b in ba) sb.append(String.format("%02x", b))
+    return sb.toString()
+}
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    private val actionScan = "com.google.zxing.client.android.SCAN"
+    private val tvTitle by lazy { findViewById<TextView>(R.id.tv_title) }
+    private val tvText by lazy { findViewById<TextView>(R.id.tv_text) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setSupportActionBar(binding.toolbar)
-
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
+        print("Inflating")
+        menuInflater.inflate(R.menu.activity_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        if (item.itemId == R.id.mn_scan)
+            scanQRCode()
+        return true
+    }
+
+
+    private fun scanQRCode() {
+        val dlgListener = { _: DialogInterface, _: Int ->
+            val uri = Uri.parse("market://search?q=pname:" + "com.google.zxing.client.android")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
+        try {
+            val intent = Intent(actionScan).putExtra("SCAN_MODE", "QR_CODE_MODE")
+            startActivityForResult(intent, 0)
+        } catch (ex: ActivityNotFoundException) {
+            showYesNoDialog("No Scanner Found", "Download a scanner code activity?", dlgListener)
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                val contents = data?.getStringExtra("SCAN_RESULT")
+                if (contents != null)
+                    decodeAndShow(contents.toByteArray(StandardCharsets.ISO_8859_1))
+            }
+        }
+    }
+
+    private fun decodeAndShow(clearTextTag: ByteArray) {
+
+        val tag = ByteBuffer.wrap(clearTextTag)
+        val tId = tag.int
+        val id = UUID(tag.long, tag.long)
+        val euros = tag.int
+        val cents = tag.int
+        val bName = ByteArray(tag.get().toInt())
+        tag[bName]
+        val name = String(bName, StandardCharsets.ISO_8859_1)
+        tvTitle.setText(R.string.items_list_title)
+
+        val textTag = """
+                   Read Tag (${clearTextTag.size}):
+                   ${byteArrayToHex(clearTextTag)}
+                   ID: $id
+                   Name: $name
+                   Price: €$euros.$cents
+                  """.trimIndent()
+        tvText.text = textTag
+    }
+
+    private fun showYesNoDialog(title: String, message: String, listener: (DialogInterface, Int) -> Unit) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Yes", listener)
+            .setNegativeButton("No", null)
+            .show()
     }
 }
