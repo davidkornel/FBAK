@@ -1,4 +1,4 @@
-package com.example.userappify
+package com.example.userappify.voucher
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,14 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.cardview.widget.CardView
+import com.example.userappify.R
 import com.example.userappify.databinding.FragmentVoucherBinding
+import com.example.userappify.model.Voucher
+import java.util.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class VoucherFragment : Fragment() {
 
-    private var staticVouchers = arrayOf("1", "2")
+    private var staticVouchers =
+        arrayOf(Voucher(UUID.randomUUID(), false, 15.0), Voucher(UUID.randomUUID(), true, 25.0))
     private var _binding: FragmentVoucherBinding? = null
 
     // This property is only valid between onCreateView and
@@ -26,9 +31,9 @@ class VoucherFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState);
         val v = inflater.inflate(R.layout.fragment_voucher, container, false)
-        val listView = v.findViewById<ListView>(R.id.voucher_list_view)
+        val listView = v.findViewById<ListView>(R.id.voucherListView)
         listView.adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, staticVouchers)
+            VoucherAdapter(requireContext(), staticVouchers)
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, index, _ ->
                 Toast.makeText(

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VoucherFragment">
+    tools:context=".voucher.VoucherFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -22,9 +22,10 @@
             android:text="Vouchers" />
 
         <ListView
-            android:id="@+id/voucher_list_view"
+            android:id="@+id/voucherListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 
 </FrameLayout>
