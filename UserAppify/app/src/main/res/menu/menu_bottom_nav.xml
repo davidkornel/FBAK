@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_qr_reader"
+        android:title="@string/add_product"
+        android:icon="@drawable/ic_email_white_24dp"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/nav_previous_transactions"
+        android:title="@string/transactions"
+        android:icon="@drawable/ic_email_white_24dp"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/nav_vouchers"
+        android:title="@string/vouchers"
+        android:icon="@drawable/ic_email_white_24dp"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/nav_cart"
+        android:title="@string/cart"
+        android:icon="@drawable/ic_email_white_24dp"
+        android:enabled="true"/>
+</menu>

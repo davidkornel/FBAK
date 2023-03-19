@@ -9,4 +9,23 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="good">UserAppify</string>
+    <string name="we_pursue_a_relaxed_gaming_experience">We pursue a relaxed gaming experience</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in">Sign in</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="bank_card_information">Bank Card Information</string>
+    <string name="title_activity_authenticated">AuthenticatedActivity</string>
+    <string name="qr_reader_add_product">QR READER ADD PRODUCT</string>
+    <string name="previous_transactions">Previous Transactions</string>
+    <string name="add_product">Add Product</string>
+    <string name="transactions">Transactions</string>
+    <string name="vouchers">Vouchers</string>
+    <string name="cart">Cart</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
