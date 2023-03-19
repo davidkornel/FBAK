@@ -3,6 +3,7 @@ package com.example.userappify
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.userappify.databinding.ActivityAuthenticatedBinding
+import com.example.userappify.voucher.VoucherFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 
