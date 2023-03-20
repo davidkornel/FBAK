@@ -16,7 +16,7 @@ Repository for the Mobile Computing course's group work.
 <img src="./docs/imgs/tags/Rice.png" width="20%" height="20%" /> 
 <img src="./docs/imgs/tags/Salad.png" width="20%" height="20%" /> 
 <img src="./docs/imgs/tags/Pasta.png" width="20%" height="20%" /> 
-<img src="./docs/imgs/tags/Potatoes.png" width="20%" height="20%" /> 
+<img src="./docs/imgs/tags/potatoes.png" width="20%" height="20%" /> 
 <img src="./docs/imgs/tags/Ice_cream.png" width="20%" height="20%" /> 
 <img src="./docs/imgs/tags/Hamburger.png" width="20%" height="20%" /> 
 
