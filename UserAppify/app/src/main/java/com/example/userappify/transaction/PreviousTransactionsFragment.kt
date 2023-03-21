@@ -40,11 +40,6 @@ class PreviousTransactionsFragment : Fragment() {
                 UUID.randomUUID(), ""
             )
         )
-    private var _binding: FragmentVoucherBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,24 +65,11 @@ class PreviousTransactionsFragment : Fragment() {
 
     private fun calculateTotalSpent(transactions: Array<Transaction>): Double {
         var total = 0.0
-        for ( transaction in transactions) {
-            for (product in transaction.products){
+        for (transaction in transactions) {
+            for (product in transaction.products) {
                 total += product.price
             }
         }
         return total
-     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-//        binding.textviewFirst.onse {
-//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-//        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
