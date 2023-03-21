@@ -1,20 +1,20 @@
 package com.example.userappify.transaction
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.userappify.R
 import com.example.userappify.databinding.FragmentVoucherBinding
 import com.example.userappify.model.NamedProduct
 import com.example.userappify.model.Transaction
-import com.example.userappify.voucher.VoucherAdapter
 import java.util.*
+
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -60,12 +60,9 @@ class PreviousTransactionsFragment : Fragment() {
             TransactionAdapter(requireContext(), staticTransactions)
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, index, _ ->
-//                TODO new screen
-                Toast.makeText(
-                    context,
-                    "Clicked " + staticTransactions[index],
-                    Toast.LENGTH_SHORT
-                ).show()
+                val intent = Intent(context, TransactionDetailActivity::class.java)
+                intent.putExtra("EXTRA_SESSION_ID", "transaction index: $index")
+                startActivity(intent)
             }
         return v
 
