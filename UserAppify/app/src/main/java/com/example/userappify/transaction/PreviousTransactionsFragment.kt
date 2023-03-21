@@ -61,7 +61,7 @@ class PreviousTransactionsFragment : Fragment() {
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, index, _ ->
                 val intent = Intent(context, TransactionDetailActivity::class.java)
-                intent.putExtra("EXTRA_SESSION_ID", "transaction index: $index")
+                intent.putExtra("EXTRA_TRANSACTION_ID", staticTransactions[index].id.toString())
                 startActivity(intent)
             }
         return v

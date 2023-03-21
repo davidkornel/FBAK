@@ -13,5 +13,7 @@ class TransactionDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.transaction_detail_activity)
+        val transactionId = intent.getStringExtra("EXTRA_TRANSACTION_ID")
+        println(transactionId)
     }
 }
