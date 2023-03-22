@@ -2,7 +2,7 @@ package com.example.userappify.model
 
 import java.util.*
 
-open class Product {
+open class Product : java.io.Serializable {
     var id: UUID
     var price: Double
 

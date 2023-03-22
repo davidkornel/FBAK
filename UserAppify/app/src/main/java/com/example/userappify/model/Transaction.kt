@@ -2,7 +2,7 @@ package com.example.userappify.model
 
 import java.util.*
 
-class Transaction {
+class Transaction : java.io.Serializable {
     var id: UUID
     var products: List<Product>
     var voucherId: UUID?
