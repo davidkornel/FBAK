@@ -1,5 +1,6 @@
 package com.example.terminal
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -21,14 +23,14 @@ fun byteArrayToHex(ba: ByteArray): String {
     return sb.toString()
 }
 
+private const val ACTION_SCAN = "com.google.zxing.client.android.SCAN"
 class MainActivity : AppCompatActivity() {
-    private val actionScan = "com.google.zxing.client.android.SCAN"
-    private val tvTitle by lazy { findViewById<TextView>(R.id.tv_title) }
-    private val tvText by lazy { findViewById<TextView>(R.id.tv_text) }
 
+    private val btScanQr by lazy { findViewById<Button>(R.id.bt_scan_qr) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        btScanQr.setOnClickListener { scanQRCode() }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -36,72 +38,46 @@ class MainActivity : AppCompatActivity() {
         setIntent(intent)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        print("Inflating")
-        menuInflater.inflate(R.menu.activity_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mn_scan)
-            scanQRCode()
-        return true
-    }
-
-
     private fun scanQRCode() {
-        val dlgListener = { _: DialogInterface, _: Int ->
-            val uri = Uri.parse("market://search?q=pname:" + "com.google.zxing.client.android")
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
-        }
         try {
-            val intent = Intent(actionScan).putExtra("SCAN_MODE", "QR_CODE_MODE")
+            // Intent with filter ACTION_SCAN
+            val intent = Intent(ACTION_SCAN).apply {
+                putExtra("SCAN_MODE", "QR_CODE_MODE" ) }
             startActivityForResult(intent, 0)
-        } catch (ex: ActivityNotFoundException) {
-            showYesNoDialog("No Scanner Found", "Download a scanner code activity?", dlgListener)
+        }
+        catch (e: ActivityNotFoundException) {
+            showDialog(this, "No Scanner Found", "Download a scanner code app?", "Yes", "No").show()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val intent = Intent(this, CheckoutActivity::class.java)
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 val contents = data?.getStringExtra("SCAN_RESULT")
                 if (contents != null)
-                    decodeAndShow(contents.toByteArray(StandardCharsets.ISO_8859_1))
+                    print("")
+                    //decodeAndShow(contents.toByteArray(StandardCharsets.ISO_8859_1))
+                val format = data?.getStringExtra("SCAN_RESULT_FORMAT") ?: ""
+                intent.putExtra("text","Format: $format\nMessage: $contents")
+                startActivity(intent)
             }
         }
     }
 
-    private fun decodeAndShow(clearTextTag: ByteArray) {
 
-        val tag = ByteBuffer.wrap(clearTextTag)
-        val tId = tag.int
-        val id = UUID(tag.long, tag.long)
-        val euros = tag.int
-        val cents = tag.int
-        val bName = ByteArray(tag.get().toInt())
-        tag[bName]
-        val name = String(bName, StandardCharsets.ISO_8859_1)
-        tvTitle.setText(R.string.items_list_title)
-
-        val textTag = """
-                   Read Tag (${clearTextTag.size}):
-                   ${byteArrayToHex(clearTextTag)}
-                   ID: $id
-                   Name: $name
-                   Price: €$euros.$cents
-                  """.trimIndent()
-        tvText.text = textTag
-    }
-
-    private fun showYesNoDialog(title: String, message: String, listener: (DialogInterface, Int) -> Unit) {
-        AlertDialog.Builder(this)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("Yes", listener)
-            .setNegativeButton("No", null)
-            .show()
+    private fun showDialog(act: Activity, title: CharSequence, message: CharSequence, buttonYes: CharSequence, buttonNo: CharSequence): android.app.AlertDialog {
+        val downloadDialog = android.app.AlertDialog.Builder(act)
+        downloadDialog.setTitle(title)
+        downloadDialog.setMessage(message)
+        downloadDialog.setPositiveButton(buttonYes) { _, _ ->
+            // possiamo passare package name per installare il qr code reader esterno se non già installato
+            val uri = Uri.parse("market://search?q=pname:com.google.zxing.client.android")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            act.startActivity(intent)
+        }
+        downloadDialog.setNegativeButton(buttonNo, null)
+        return downloadDialog.create()
     }
 }
