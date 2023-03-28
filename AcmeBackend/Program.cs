@@ -1,3 +1,4 @@
+using AcmeBackend;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,12 +33,3 @@ app.MapPost("/userdata", ([FromBody] UserDataRequestForm userDataRequestForm) =>
 .WithOpenApi();
 
 app.Run();
-
-internal record RegistrationRequestForm(string UserPublicKey);
-internal record RegistrationResponseForm(string UserId, string SuperMarketId);
-internal record CheckoutRequestForm(Product[] Products, string UserId, string? VoucherId, bool? DiscountNow, string Signature);
-internal record CheckoutResponseForm(double AmountPaid);
-internal record UserDataRequestForm(string UserId, string Signature);
-internal record UserDataResponseForm(Transaction[] LastTransactions, string[] AvailableVoucherIds);
-internal record Product(string Id, int Price);
-internal record Transaction(Product[] Products, string UserId, string? VoucherId, bool? DiscountNow);
