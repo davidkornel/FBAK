@@ -20,15 +20,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/register", ([FromBody] RegistrationRequestForm registrationRequestForm) => new RegistrationResponseForm("cef0cbf3-6458-4f13-a418-ee4d7e7505d", "cef0cbf3-6458-4f13-a418-ee4d7e7505d"))
+var acmeManager = new AcmeManager();
+
+app.MapPost("/register", acmeManager.RegisterUser)
 .WithName("RegisterUser")
 .WithOpenApi();
 
-app.MapPost("/checkout", ([FromBody] CheckoutRequestForm checkoutRequestForm) => new CheckoutResponseForm(42.5))
+app.MapPost("/checkout", acmeManager.CheckoutUser)
 .WithName("CheckoutUser")
 .WithOpenApi();
 
-app.MapPost("/userdata", ([FromBody] UserDataRequestForm userDataRequestForm) => new UserDataResponseForm(new Transaction[] { new Transaction(new Product[] { new Product("42", 43) }, "42", "43", false) }, new string[] { "cef0cbf3-6458-4f13-a418-ee4d7e7505d" }))
+app.MapPost("/userdata", acmeManager.FetchUserData)
 .WithName("FetchUserData")
 .WithOpenApi();
 
