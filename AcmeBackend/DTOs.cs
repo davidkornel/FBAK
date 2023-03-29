@@ -1,4 +1,4 @@
-namespace AcmeBackend
+﻿namespace AcmeBackend
 {
     public record RegistrationRequestForm(string UserPublicKey);
     public record RegistrationResponseForm(string SuperMarketPublicKey, string UserId);
@@ -8,4 +8,6 @@ namespace AcmeBackend
     public record UserDataResponseForm(string[] AvailableVoucherIds, Transaction[] LastTransactions);
     public record Product(string Id, int Price);
     public record Transaction(bool? DiscountNow, Product[] Products, string UserId, string? VoucherId);
+
+    public record AcmeError(string ErrorMessage);
 }

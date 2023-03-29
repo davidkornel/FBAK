@@ -24,14 +24,20 @@ var acmeManager = new AcmeManager();
 
 app.MapPost("/register", acmeManager.RegisterUser)
 .WithName("RegisterUser")
+.Produces<RegistrationResponseForm>()
+.Produces<AcmeError>(422)
 .WithOpenApi();
 
 app.MapPost("/checkout", acmeManager.CheckoutUser)
 .WithName("CheckoutUser")
+.Produces<CheckoutResponseForm>()
+.Produces<AcmeError>(422)
 .WithOpenApi();
 
 app.MapPost("/userdata", acmeManager.FetchUserData)
 .WithName("FetchUserData")
+.Produces<UserDataResponseForm>()
+.Produces<AcmeError>(422)
 .WithOpenApi();
 
 app.Run();
