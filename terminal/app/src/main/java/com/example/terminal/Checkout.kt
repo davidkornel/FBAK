@@ -1,12 +1,13 @@
 package com.example.terminal
 
+import com.google.gson.Gson
 import java.util.UUID
 
 data class Product (
     val id : String,
     val price: Int
         )
-data class Checkout (
+class Checkout (
     val products: List<Product>,
     val userId: String,
     val voucherId: String? = null,
@@ -16,7 +17,15 @@ data class Checkout (
 
 var products = listOf<Product>(
     Product(UUID.randomUUID().toString(),3),
+    Product(UUID.randomUUID().toString(),4),
+    Product(UUID.randomUUID().toString(),4),
+    Product(UUID.randomUUID().toString(),4),
+    Product(UUID.randomUUID().toString(),4),
     Product(UUID.randomUUID().toString(),4)
 )
 
 var checkout = Checkout(products,UUID.randomUUID().toString(), signature = "user_signature")
+
+fun encode(checkout: Checkout): String {
+    return Gson().toJson(checkout).toString()
+}

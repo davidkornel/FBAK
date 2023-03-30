@@ -56,16 +56,18 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 val contents = data?.getStringExtra("SCAN_RESULT")
-                if (contents != null)
-                    print("")
+                if (contents != null) {
                     //decodeAndShow(contents.toByteArray(StandardCharsets.ISO_8859_1))
-                val format = data?.getStringExtra("SCAN_RESULT_FORMAT") ?: ""
-                intent.putExtra("text","Format: $format\nMessage: $contents")
+                    //val format = data?.getStringExtra("SCAN_RESULT_FORMAT") ?: ""
+                    //intent.putExtra("text","Format: $format\nMessage: $contents")
+                    intent.putExtra("text",contents)
+                }
+                else
+                    intent.putExtra("text","QRScan ERROR")
                 startActivity(intent)
             }
         }
     }
-
 
     private fun showDialog(act: Activity, title: CharSequence, message: CharSequence, buttonYes: CharSequence, buttonNo: CharSequence): android.app.AlertDialog {
         val downloadDialog = android.app.AlertDialog.Builder(act)

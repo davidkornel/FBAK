@@ -25,29 +25,6 @@ private fun readStream(input: InputStream): String {
     return response.toString()
 }
 
-/*fun getUsers(act: CheckoutActivity) {
-    val urlRoute = "/users"
-    val url = URL("http://192.168.56.1:8000")
-    act.writeText("GET ${url.toExternalForm()}")
-
-    var urlConnection: HttpURLConnection? = null
-    try {
-        urlConnection = (url.openConnection() as HttpURLConnection).apply {
-            doInput = true
-            setRequestProperty("Content-Type", "application/json")
-            useCaches = false
-            connectTimeout = 5000
-            if (responseCode == 200)
-                act.appendText(readStream(inputStream))
-            else
-                act.appendText("Code: $responseCode")
-        }
-    } catch (e: Exception) {
-        act.appendText(e.toString())
-    }
-    urlConnection?.disconnect()
-}*/
-
 fun pay(act: CheckoutActivity, checkout: Checkout) {
     val urlRoute = "/checkout"
     val url = URL("http://10.0.2.2:5107$urlRoute")
