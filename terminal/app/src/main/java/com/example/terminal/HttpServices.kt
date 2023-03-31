@@ -29,38 +29,36 @@ fun pay(act: CheckoutActivity, checkout: Checkout) {
     val urlRoute = "/checkout"
     val url = URL("http://10.0.2.2:5107$urlRoute")
 
-    thread {
-        var urlConnection: HttpURLConnection? = null
-        try {
-            urlConnection = (url.openConnection() as HttpURLConnection).apply {
-                doOutput = true
-                doInput = true
-                requestMethod = "POST"
-                setRequestProperty("Content-Type", "application/json")
-                var payload = gson.toJson(checkout)
-                useCaches = false
-                connectTimeout = 5000
-                with(outputStream) {
-                    write(payload.toByteArray())
-                    flush()
-                    close()
-                }
+    var urlConnection: HttpURLConnection? = null
+    try {
+        urlConnection = (url.openConnection() as HttpURLConnection).apply {
+            doOutput = true
+            doInput = true
+            requestMethod = "POST"
+            setRequestProperty("Content-Type", "application/json")
+            var payload = gson.toJson(checkout)
+            useCaches = false
+            connectTimeout = 5000
+            with(outputStream) {
+                write(payload.toByteArray())
+                flush()
+                close()
+            }
                 // get response
-                if (responseCode == 200) {
-                    act.writeText(readStream(inputStream))
-                    act.writeTitle("Payment successfull !")
-                    act.disableBtn()
-                }
-                else {
-                    act.writeTitle(" Payment failed")
-                    act.writeText("Code: $responseCode")
-                }
+            if (responseCode == 200) {
+                act.writeText("PAYMENT SUCCESSFULL!")
+                act.setImg(R.drawable.done_black_24dp)
+            }
+            else {
+                act.writeText("PAYMENT FAILED!")
+                act.setImg(R.drawable.error_outline_black_24dp)
             }
         }
-        catch (e: Exception) {
-            act.writeText(e.toString())
-        }
-        urlConnection?.disconnect()
     }
+    catch (e: Exception) {
+        act.setImg(R.drawable.error_outline_black_24dp)
+        act.writeText(e.toString())
+    }
+    urlConnection?.disconnect()
 
 }

@@ -1,38 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".CheckoutActivity">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/res_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        app:srcCompat="@drawable/done_black_24dp" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/tv_title_co"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_check"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:text="TextView" />
-
-        <Button
-            android:id="@+id/bt_pay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_pay" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/res_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|top"
+        android:layout_margin="20dp"
+        android:layout_weight="3"
+        android:text="ERROR MESSAGE"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+</LinearLayout>

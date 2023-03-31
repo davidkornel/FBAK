@@ -15,7 +15,7 @@ class Checkout (
     val signature: String
     )
 
-var products = listOf<Product>(
+var products = arrayListOf<Product>(
     Product(UUID.randomUUID().toString(),3),
     Product(UUID.randomUUID().toString(),4),
     Product(UUID.randomUUID().toString(),4),
@@ -29,3 +29,4 @@ var checkout = Checkout(products,UUID.randomUUID().toString(), signature = "user
 fun encode(checkout: Checkout): String {
     return Gson().toJson(checkout).toString()
 }
+
