@@ -16,4 +16,5 @@
     <string name="tv_title_co">Checkout</string>
     <string name="btn_pay">Pay</string>
     <string name="msg_no_items">No items to show</string>
+    <string name="welcome_msg">Welcome to the Checkout Terminal</string>
 </resources>

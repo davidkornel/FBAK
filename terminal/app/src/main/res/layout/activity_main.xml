@@ -40,7 +40,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center|top"
             android:layout_margin="20dp"
-            android:text="Welcome to the Checkout terminal"
+            android:text="@string/welcome_msg"
             android:textSize="24sp"
             android:textStyle="bold" />
     </LinearLayout>

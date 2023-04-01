@@ -27,7 +27,7 @@ private const val ACTION_SCAN = "com.google.zxing.client.android.SCAN"
 class MainActivity : AppCompatActivity() {
 
     private val btScanQr by lazy { findViewById<Button>(R.id.bt_scan_qr) }
-    private val tv_error by lazy { findViewById<TextView>(R.id.tv_error_main) }
+    private val tvError by lazy { findViewById<TextView>(R.id.tv_error_main) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 else
-                    tv_error.text = "CAN'T READ THE QR CODE !"
+                    tvError.text = "CAN'T READ THE QR CODE !"
 
             }
         }

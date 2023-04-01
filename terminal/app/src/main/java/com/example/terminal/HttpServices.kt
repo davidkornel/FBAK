@@ -46,17 +46,20 @@ fun pay(act: CheckoutActivity, checkout: Checkout) {
             }
                 // get response
             if (responseCode == 200) {
+                val response = gson.fromJson(readStream(inputStream),Response::class.java)
                 act.writeText("PAYMENT SUCCESSFULL!")
-                act.setImg(R.drawable.done_black_24dp)
+                act.appendText("Total paid ${response.totalAmountPaid} €")
+                act.setImg(R.drawable.baseline_done_24)
             }
             else {
                 act.writeText("PAYMENT FAILED!")
-                act.setImg(R.drawable.error_outline_black_24dp)
+                act.appendText(readStream(inputStream))
+                act.setImg(R.drawable.outline_error_outline_24)
             }
         }
     }
     catch (e: Exception) {
-        act.setImg(R.drawable.error_outline_black_24dp)
+        act.setImg(R.drawable.outline_error_outline_24)
         act.writeText(e.toString())
     }
     urlConnection?.disconnect()

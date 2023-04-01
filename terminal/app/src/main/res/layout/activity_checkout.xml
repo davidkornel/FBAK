@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:srcCompat="@drawable/done_black_24dp" />
+        app:srcCompat="@android:color/transparent" />
 
     <TextView
         android:id="@+id/res_msg"
@@ -21,7 +21,6 @@
         android:layout_gravity="center|top"
         android:layout_margin="20dp"
         android:layout_weight="3"
-        android:text="ERROR MESSAGE"
         android:textSize="24sp"
         android:textStyle="bold" />
 </LinearLayout>

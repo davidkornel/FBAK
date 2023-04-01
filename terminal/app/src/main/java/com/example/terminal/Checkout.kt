@@ -15,6 +15,10 @@ class Checkout (
     val signature: String
     )
 
+data class Response (
+    val totalAmountPaid: Double
+        )
+
 var products = arrayListOf<Product>(
     Product(UUID.randomUUID().toString(),3),
     Product(UUID.randomUUID().toString(),4),
