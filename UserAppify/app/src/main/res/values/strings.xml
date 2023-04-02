@@ -26,6 +26,8 @@
     <string name="transactions">Transactions</string>
     <string name="vouchers">Vouchers</string>
     <string name="cart">Cart</string>
+    <string name="rm_prod_basket">Remove product from the </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back_button">Back</string>
 </resources>
