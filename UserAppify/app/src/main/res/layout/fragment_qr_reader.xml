@@ -4,17 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QrReaderFragment">
+    tools:context=".qrreader.QrReaderFragment">
 
-    <TextView
-        android:id="@+id/textview_first"
-        android:layout_width="wrap_content"
+
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/qr_reader_add_product"
+        android:text="@string/scan_qr_code"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </Button>
+
+    <ListView
+        android:id="@+id/hashListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnScan" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/nameKey"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/name"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/btnScan" />-->
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
