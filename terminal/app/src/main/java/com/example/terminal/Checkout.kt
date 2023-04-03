@@ -2,7 +2,7 @@ package com.example.terminal
 
 import com.google.gson.Gson
 import java.util.UUID
-
+// TODO fix the datamodel when the server's datamodel is fixed
 data class Product (
     val id : String,
     val price: Int
