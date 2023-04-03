@@ -33,4 +33,5 @@
     <string name="empty">empty</string>
     <string name="result_not_found">qr result not found</string>
     <string name="title_activity_qr_reader">QrReaderActivity</string>
+    <string name="use">Use</string>
 </resources>

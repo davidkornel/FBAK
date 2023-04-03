@@ -3,6 +3,7 @@ package com.example.userappify.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.util.*
 import kotlin.String
 
 data class Product (
@@ -12,12 +13,24 @@ data class Product (
 
 class ProductHashViewModel : ViewModel() {
     private val _products = MutableLiveData<MutableList<String>>()
+    val products: LiveData<MutableList<String>>
+        get() = _products
+
+    private val _vouchers = MutableLiveData<MutableList<Voucher>>()
+    val vouchers: LiveData<MutableList<Voucher>>
+        get() = _vouchers
+
+
 
     init {
-        _products.value = mutableListOf<String>()
+        _products.value = mutableListOf()
+        _vouchers.value = mutableListOf(Voucher(UUID.randomUUID(), false, 15.0),
+            Voucher(UUID.randomUUID(), true, 69.0))
     }
-    val products: LiveData<MutableList<String>>
-            get() = _products
+
+    fun getSelectedVoucher(): Voucher? {
+        return _vouchers.value?.firstOrNull() { it.isSelected }
+    }
 
 
     fun getProducts(): MutableLiveData<MutableList<String>> {

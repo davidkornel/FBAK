@@ -47,9 +47,9 @@ class QrReaderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.products.observe(viewLifecycleOwner, Observer { list ->
+        viewModel.products.observe(viewLifecycleOwner) {
             arrayAdapter.notifyDataSetChanged()
-        })
+        }
         setupScanner()
         setOnClickListener()
     }
