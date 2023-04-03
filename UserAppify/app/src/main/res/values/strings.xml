@@ -28,4 +28,9 @@
     <string name="cart">Cart</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="show_qr_code_in_fragment">Show qr code in fragment</string>
+    <string name="scan_qr_code">Scan QR code</string>
+    <string name="empty">empty</string>
+    <string name="result_not_found">qr result not found</string>
+    <string name="title_activity_qr_reader">QrReaderActivity</string>
 </resources>
