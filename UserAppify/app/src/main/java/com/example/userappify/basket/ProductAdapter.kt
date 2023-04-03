@@ -2,16 +2,16 @@ package com.example.userappify.basket
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.TextView
 import com.example.userappify.R
+import com.example.userappify.model.*
 
 
-class ProductAdapter(private val ctx: Context, val products: ArrayList<NamedProduct>): BaseAdapter() {
+class ProductAdapter(private val ctx: Context, val products: ArrayList<NamedProduct>, val viewModel: ProductHashViewModel): BaseAdapter() {
     override fun getCount(): Int {
         return products.size
     }
@@ -34,7 +34,7 @@ class ProductAdapter(private val ctx: Context, val products: ArrayList<NamedProd
             row.findViewById<TextView>(R.id.tv_lst_name).text = name
             row.findViewById<TextView>(R.id.tv_lst_price).text = price.toString()
             row.findViewById<ImageButton>(R.id.btn_rm_prod).setOnClickListener{
-                products.remove(getItem(pos))
+                viewModel.removeProduct(products[pos])
                 notifyDataSetChanged()
             }
         }

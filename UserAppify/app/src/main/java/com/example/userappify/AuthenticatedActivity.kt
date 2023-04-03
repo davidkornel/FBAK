@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.userappify.basket.CartFragment
 import com.example.userappify.databinding.ActivityAuthenticatedBinding
+import com.example.userappify.deconding_utils.readKey
 import com.example.userappify.qrreader.QrReaderFragment
 import com.example.userappify.voucher.VoucherFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -21,6 +22,10 @@ class AuthenticatedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // IMPORT PUBLIC KEY AND STORE IT INTO THE ANDROID KEYSTORE
+        // TO DECODE PRODUCTS' QR CODES
+        readKey()
 
         binding = ActivityAuthenticatedBinding.inflate(layoutInflater)
         setContentView(binding.root)
