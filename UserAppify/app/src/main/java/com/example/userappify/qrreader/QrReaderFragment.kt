@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.userappify.R
+import com.example.userappify.basket.ProductAdapter
 import com.example.userappify.databinding.FragmentQrReaderBinding
 import com.example.userappify.model.ProductHashViewModel
 import com.google.zxing.integration.android.IntentIntegrator
 import org.json.JSONException
+import com.example.userappify.deconding_utils.*
+import com.example.userappify.model.NamedProduct
+import java.nio.charset.StandardCharsets
 
 
 /**
@@ -31,25 +36,24 @@ class QrReaderFragment : Fragment() {
 
     private val viewModel: ProductHashViewModel by activityViewModels()
 
-    private lateinit var arrayAdapter: ArrayAdapter<String>
+    private lateinit var productAdapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
+        productAdapter = ProductAdapter(requireContext(), viewModel.products.value as ArrayList<NamedProduct>,viewModel)
         _binding = FragmentQrReaderBinding.inflate(inflater, container, false)
-        arrayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, viewModel.products.value as List<String>)
-        binding.hashListView.adapter = arrayAdapter
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.products.observe(viewLifecycleOwner, Observer { list ->
-            arrayAdapter.notifyDataSetChanged()
-        })
+        viewModel.products.observe(viewLifecycleOwner) {
+            productAdapter.notifyDataSetChanged()
+        }
         setupScanner()
         setOnClickListener()
     }
@@ -83,18 +87,19 @@ class QrReaderFragment : Fragment() {
             } else {
                 // If QRCode contains data.
                 try {
-                    println(result.contents.toString())
-                    viewModel.addHashedProduct(result.contents.toString())
-                    // Converting the data to json format
-//                    val obj = JSONObject(result.contents)
+                    // Converting the data to NamedProduct
+                    val namProd = decodeQRCODE(result.contents.toByteArray(StandardCharsets.ISO_8859_1))
 
                     // Show values in UI.
-//                    binding.name.text = obj.getString("name")
-//                    binding.siteName.text = obj.getString("site_name")
+                    if (namProd != null) {
+                        viewModel.addHashedProduct(namProd)
+                        binding.tvReadName.text = "${namProd.name} added to the cart!"
+                        binding.tvReadPrice.text = "Price : ${namProd.price.toString()} €"
+                    }
+
 
                 } catch (e: JSONException) {
                     e.printStackTrace()
-                    println(result.contents)
                     // Data not in the expected format. So, whole object as toast message.
                     Toast.makeText(activity, result.contents, Toast.LENGTH_LONG).show()
                 }
