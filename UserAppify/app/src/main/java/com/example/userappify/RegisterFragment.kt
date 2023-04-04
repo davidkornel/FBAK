@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.userappify.api.registerUser
 import com.example.userappify.databinding.FragmentRegisterBinding
 import com.example.userappify.deconding_utils.*
 import com.example.userappify.model.Card
@@ -122,8 +123,18 @@ class RegisterFragment : Fragment() {
 
                 val pemCertificate = getPemCertificate()
                 registrationUser.publicKey = pemCertificate
-//                TODO http login call
 
+                try {
+                    val user = registerUser(registrationUser)
+                } catch (e: Exception) {
+                    Snackbar.make(
+                        view,
+                        "Server is not available, ${e.message}",
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setAction("Action", null).show()
+                    return@setOnClickListener
+                }
 
                 Snackbar.make(view, "Beep Boop Signing up ", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
