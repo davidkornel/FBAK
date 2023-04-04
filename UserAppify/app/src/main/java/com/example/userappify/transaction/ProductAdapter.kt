@@ -13,8 +13,8 @@ import com.example.userappify.model.Transaction
 import com.example.userappify.model.Voucher
 
 
-class ProductAdapter(private val ctx: Context, val products: List<Product>) :
-    ArrayAdapter<Product>(ctx, R.layout.product_list_item, products) {
+class ProductAdapter(private val ctx: Context, val products: List<NamedProduct>) :
+    ArrayAdapter<NamedProduct>(ctx, R.layout.product_list_item, products) {
     override fun getView(pos: Int, convertView: View?, parent: ViewGroup): View {
         val row = convertView ?: (ctx as Activity).layoutInflater.inflate(
             R.layout.product_list_item,
@@ -22,8 +22,7 @@ class ProductAdapter(private val ctx: Context, val products: List<Product>) :
             false
         )
         with(products[pos]) {
-            row.findViewById<TextView>(R.id.productName).text =
-                if (this is NamedProduct) "$name Transaction" else "No name product"
+            row.findViewById<TextView>(R.id.productName).text = "$name Transaction"
             row.findViewById<TextView>(R.id.productPrice).text = "$price eur"
         }
         return row

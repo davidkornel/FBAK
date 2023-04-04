@@ -4,14 +4,14 @@ import java.util.*
 
 class Transaction : java.io.Serializable {
     var id: UUID
-    var products: List<Product>
+    var products: List<NamedProduct>
     var voucherId: UUID?
     var userId: UUID
     var signature: String
 
     constructor(
         id: UUID,
-        products: List<Product>,
+        products: List<NamedProduct>,
         voucherId: UUID?,
         userId: UUID,
         signature: String

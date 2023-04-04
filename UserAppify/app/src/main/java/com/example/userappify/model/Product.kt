@@ -1,13 +1,9 @@
 package com.example.userappify.model
 
-import java.util.*
+//TODO fix the datamodel when server datamodel is fixed
+open class Product(
+    var id: String,
+    var price: Int //TODO this should be double
+) : java.io.Serializable {
 
-open class Product : java.io.Serializable {
-    var id: UUID
-    var price: Double
-
-    constructor(id: UUID, price: Double) {
-        this.id = id
-        this.price = price
-    }
 }
