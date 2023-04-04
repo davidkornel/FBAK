@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.userappify.databinding.FragmentRegisterBinding
+import com.example.userappify.deconding_utils.*
 import com.example.userappify.model.Card
 import com.google.android.material.snackbar.Snackbar
 import com.example.userappify.model.RegistrationUser
-import com.example.userappify.model.Transaction
-import com.example.userappify.model.Voucher
 import com.google.android.material.textfield.TextInputEditText
 import java.time.LocalDate
 import java.time.ZoneId
@@ -32,8 +31,7 @@ class RegisterFragment : Fragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
@@ -96,8 +94,7 @@ class RegisterFragment : Fragment() {
                     val year = "20" + cardExpirationDateString.split('/')[1]
                     cardExpirationDate = Date.from(
                         LocalDate.of(year.toInt(), month.toInt(), 1).atStartOfDay()
-                            .atZone(ZoneId.of("UTC"))
-                            .toInstant()
+                            .atZone(ZoneId.of("UTC")).toInstant()
                     )
                 } else {
                     Snackbar.make(view, "Expiration date is not correct", Snackbar.LENGTH_SHORT)
@@ -106,15 +103,7 @@ class RegisterFragment : Fragment() {
                 }
 
                 val registrationUser = RegistrationUser(
-                    username,
-                    password,
-                    email,
-                    name,
-                    surname,
-                    "",
-                    ArrayList(),
-                    ArrayList(),
-                    Card(
+                    username, password, email, name, surname, "", ArrayList(), ArrayList(), Card(
                         UUID.randomUUID(), cardNumber, cardCsv, cardExpirationDate
                     )
                 )
@@ -125,6 +114,15 @@ class RegisterFragment : Fragment() {
                     return@setOnClickListener
                 }
 
+                // check if key exists
+                if (!keysPresent()) {
+                    generateAndStoreKeys(requireContext())
+                }
+
+
+                val pemCertificate = getPemCertificate()
+                registrationUser.publicKey = pemCertificate
+//                TODO http login call
 
 
                 Snackbar.make(view, "Beep Boop Signing up ", Snackbar.LENGTH_LONG)
@@ -132,8 +130,8 @@ class RegisterFragment : Fragment() {
                 val intent = Intent(this.context, AuthenticatedActivity::class.java)
                 startActivity(intent)
             } catch (e: Exception) {
-                Snackbar.make(view, "Wrong input", Snackbar.LENGTH_SHORT)
-                    .setAction("Action", null).show()
+                Snackbar.make(view, "Wrong input", Snackbar.LENGTH_SHORT).setAction("Action", null)
+                    .show()
             }
         }
     }
