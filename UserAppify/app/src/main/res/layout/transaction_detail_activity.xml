@@ -13,5 +13,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Transaction Detail" />
+
+        <TextView
+            android:id="@+id/transactionDetailTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total" />
+
+        <ListView
+            android:id="@+id/transactionDetailProductsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
