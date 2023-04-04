@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.userappify.basket.CartFragment
 import com.example.userappify.databinding.ActivityAuthenticatedBinding
+import com.example.userappify.transaction.PreviousTransactionsFragment
 import com.example.userappify.deconding_utils.readKey
 import com.example.userappify.qrreader.QrReaderFragment
 import com.example.userappify.voucher.VoucherFragment
@@ -31,29 +32,36 @@ class AuthenticatedActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
-        supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_authenticated, qrFragment).commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment_content_authenticated, qrFragment).commit()
 
 
         bottomNavigationView.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_qr_reader -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_authenticated, qrFragment)
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment_content_authenticated, qrFragment)
                         .commit()
                     return@OnItemSelectedListener true
                 }
                 R.id.nav_previous_transactions -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment_content_authenticated, previousTransactionsFragment).commit()
+                        .replace(
+                            R.id.nav_host_fragment_content_authenticated,
+                            previousTransactionsFragment
+                        ).commit()
                     return@OnItemSelectedListener true
                 }
                 R.id.nav_vouchers -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment_content_authenticated, voucherFragment).commit()
+                        .replace(R.id.nav_host_fragment_content_authenticated, voucherFragment)
+                        .commit()
                     return@OnItemSelectedListener true
                 }
                 R.id.nav_cart -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment_content_authenticated, cartFragment).commit()
+                        .replace(R.id.nav_host_fragment_content_authenticated, cartFragment)
+                        .commit()
                     return@OnItemSelectedListener true
                 }
             }

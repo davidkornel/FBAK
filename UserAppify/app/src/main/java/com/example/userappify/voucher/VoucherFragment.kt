@@ -17,6 +17,7 @@ import java.util.*
  */
 class VoucherFragment : Fragment() {
 
+    //    TODO fetch data
     private var staticVouchers =
         arrayOf(Voucher(UUID.randomUUID(), false, 15.0), Voucher(UUID.randomUUID(), true, 25.0))
     private var _binding: FragmentVoucherBinding? = null
