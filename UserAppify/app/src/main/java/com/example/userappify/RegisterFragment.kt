@@ -8,8 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.userappify.databinding.FragmentRegisterBinding
+import com.example.userappify.model.Card
 import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.FragmentActivity
+import com.example.userappify.model.RegistrationUser
+import com.example.userappify.model.Transaction
+import com.example.userappify.model.Voucher
+import com.google.android.material.textfield.TextInputEditText
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -33,6 +41,26 @@ class RegisterFragment : Fragment() {
 
     }
 
+    fun isDateStringValid(dateString: String): Boolean {
+        val dateRegex = Regex("(\\d\\d/\\d\\d)")
+        return dateString.matches(dateRegex)
+    }
+
+    fun isRegistrationDataValid(data: RegistrationUser): Boolean {
+        val notEmptyStringRegex = Regex("(([A-Z]+|[a-z]+))")
+        val passwordRegex = Regex("(([A-Z]+|[a-z]+)){8}")
+        val cvvRegex = Regex("(\\d\\d\\d)")
+        val cardNumberRegex = Regex("(\\d{16})")
+        val emailRegex = Regex("^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.+)")
+        return data.username.matches(notEmptyStringRegex) and data.name.matches(notEmptyStringRegex) and data.surname.matches(
+            notEmptyStringRegex
+        ) and data.email.matches(emailRegex) and (data.password?.matches(passwordRegex)
+            ?: false) and data.card.number.matches(cardNumberRegex) and data.card.csv.matches(
+            cvvRegex
+        )
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,11 +68,73 @@ class RegisterFragment : Fragment() {
             findNavController().navigate(R.id.action_RegisterFragment_to_LoginFragment)
         }
 
+        val registerView = view
+
         binding.registerSignUp.setOnClickListener {
-            Snackbar.make(view, "Beep Boop Signing up ", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-            val intent = Intent(this.context, AuthenticatedActivity::class.java)
-            startActivity( intent)
+            try {
+                val username =
+                    registerView.findViewById<TextInputEditText>(R.id.register_username)?.text.toString()
+                val name =
+                    registerView.findViewById<TextInputEditText>(R.id.register_name)?.text.toString()
+                val surname =
+                    registerView.findViewById<TextInputEditText>(R.id.register_surname)?.text.toString()
+                val email =
+                    registerView.findViewById<TextInputEditText>(R.id.register_email)?.text.toString()
+                val password =
+                    registerView.findViewById<TextInputEditText>(R.id.register_password)?.text.toString()
+                val cardNumber =
+                    registerView.findViewById<TextInputEditText>(R.id.register_card_number)?.text.toString()
+                val cardExpirationDateString =
+                    registerView.findViewById<TextInputEditText>(R.id.register_card_expiration_date)?.text.toString()
+                val cardCsv =
+                    registerView.findViewById<TextInputEditText>(R.id.register_card_csv)?.text.toString()
+
+                var cardExpirationDate: Date?
+
+                if (isDateStringValid(cardExpirationDateString)) {
+                    val month = cardExpirationDateString.split('/')[0]
+                    val year = "20" + cardExpirationDateString.split('/')[1]
+                    cardExpirationDate = Date.from(
+                        LocalDate.of(year.toInt(), month.toInt(), 1).atStartOfDay()
+                            .atZone(ZoneId.of("UTC"))
+                            .toInstant()
+                    )
+                } else {
+                    Snackbar.make(view, "Expiration date is not correct", Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show()
+                    return@setOnClickListener
+                }
+
+                val registrationUser = RegistrationUser(
+                    username,
+                    password,
+                    email,
+                    name,
+                    surname,
+                    "",
+                    ArrayList(),
+                    ArrayList(),
+                    Card(
+                        UUID.randomUUID(), cardNumber, cardCsv, cardExpirationDate
+                    )
+                )
+
+                if (!isRegistrationDataValid(registrationUser)) {
+                    Snackbar.make(view, "Input not valid", Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show()
+                    return@setOnClickListener
+                }
+
+
+
+                Snackbar.make(view, "Beep Boop Signing up ", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+                val intent = Intent(this.context, AuthenticatedActivity::class.java)
+                startActivity(intent)
+            } catch (e: Exception) {
+                Snackbar.make(view, "Wrong input", Snackbar.LENGTH_SHORT)
+                    .setAction("Action", null).show()
+            }
         }
     }
 
