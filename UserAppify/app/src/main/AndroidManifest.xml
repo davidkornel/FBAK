@@ -17,9 +17,17 @@
             android:label="@string/title_activity_qr_reader"
             android:theme="@style/Theme.UserAppify.NoActionBar" />
         <activity
+            android:name=".basket.ShowCodeActivity"
+            android:exported="false" />
+        <activity
             android:name=".AuthenticatedActivity"
             android:exported="false"
             android:label="@string/title_activity_authenticated"
+            android:theme="@style/Theme.UserAppify.NoActionBar" />
+        <activity
+            android:name=".transaction.TransactionDetailActivity"
+            android:exported="false"
+            android:label="Transaction Detail"
             android:theme="@style/Theme.UserAppify.NoActionBar" />
         <activity
             android:name=".MainActivity"

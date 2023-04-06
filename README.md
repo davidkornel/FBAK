@@ -4,7 +4,7 @@ Repository for the Mobile Computing course's group work.
 
 ## Class diagram
 
-![class diagram](https://i.imgur.com/mPv7FOB.png)
+![UML class(1)](https://user-images.githubusercontent.com/49610117/229872009-70458961-a4e1-473c-a2df-6f3712d35394.png)
 
 ## Figma prototype
 

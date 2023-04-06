@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CartFragment">
+    android:orientation="vertical"
+    tools:context=".basket.CartFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
+        android:id="@+id/list_view_products"
+        android:layout_width="match_parent"
+        android:layout_height="623dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btn_checkout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="cart fragment" />
+        android:layout_weight="50"
+        android:gravity="center"
+        android:text="Checkout" />
 
-</FrameLayout>
+</LinearLayout>

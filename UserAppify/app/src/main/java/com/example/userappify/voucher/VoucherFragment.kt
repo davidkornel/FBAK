@@ -18,6 +18,7 @@ import java.util.*
  */
 class VoucherFragment : Fragment() {
 
+    //    TODO fetch data
     private var staticVouchers =
         listOf(Voucher(UUID.randomUUID(), false, 15.0),
             Voucher(UUID.randomUUID(), true, 25.0))
