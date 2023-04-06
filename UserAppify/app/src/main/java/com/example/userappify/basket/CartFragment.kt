@@ -33,7 +33,7 @@ class CartFragment : Fragment() {
         v.findViewById<Button>(R.id.btn_checkout).setOnClickListener {
             val checkout = getCheckoutFromNamedProducts(
                 viewModel.products.value as ArrayList<NamedProduct>,
-                UUID.randomUUID(),
+                viewModel.getSelectedVoucher()?.id,
                 UUID.randomUUID(),
                 true,
                 "signature"

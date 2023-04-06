@@ -31,13 +31,10 @@ class VoucherAdapter(private val ctx: Context, val vouchers: List<Voucher>) :
             row.findViewById<TextView>(R.id.voucherDiscount).text = "$discount % discount"
             row.findViewById<TextView>(R.id.voucherIsUsed).text =
                 if (isUsed) "Used" else "Available"
-            if (isSelected && _selectedIndex == -1 || _selectedIndex != -1 && pos == _selectedIndex) {
-                row.setBackgroundColor(Color.CYAN)
-                isSelected = true
-            }else {
-                row.setBackgroundColor(Color.WHITE)
-                isSelected = false
+            if (_selectedIndex != -1 && pos == _selectedIndex) {
+                isSelected = !isSelected
             }
+            if(isSelected)  row.setBackgroundColor(Color.BLUE) else row.setBackgroundColor(Color.WHITE)
         }
         return row
     }
