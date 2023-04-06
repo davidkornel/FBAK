@@ -1,14 +1,15 @@
 package com.example.userappify.voucher
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.userappify.R
 import com.example.userappify.databinding.FragmentVoucherBinding
+import com.example.userappify.model.ProductHashViewModel
 import com.example.userappify.model.Voucher
 import java.util.*
 
@@ -19,12 +20,15 @@ class VoucherFragment : Fragment() {
 
     //    TODO fetch data
     private var staticVouchers =
-        arrayOf(Voucher(UUID.randomUUID(), false, 15.0), Voucher(UUID.randomUUID(), true, 25.0))
+        listOf(Voucher(UUID.randomUUID(), false, 15.0),
+            Voucher(UUID.randomUUID(), true, 25.0))
     private var _binding: FragmentVoucherBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val viewModel: ProductHashViewModel by activityViewModels()
+    private lateinit var voucherAdapter: VoucherAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +37,20 @@ class VoucherFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState);
         val v = inflater.inflate(R.layout.fragment_voucher, container, false)
         val listView = v.findViewById<ListView>(R.id.voucherListView)
-        listView.adapter =
-            VoucherAdapter(requireContext(), staticVouchers)
+        voucherAdapter = VoucherAdapter(requireContext(), viewModel.vouchers.value as List<Voucher>)
+        listView.adapter = voucherAdapter
+
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, index, _ ->
-                Toast.makeText(
-                    context,
-                    "Clicked " + staticVouchers[index],
-                    Toast.LENGTH_SHORT
-                ).show()
+                if ( viewModel.vouchers.value?.get(index)?.isUsed == true){
+                    Toast.makeText(
+                        context,
+                        "Clicked Voucher is already used",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }else{
+                    (listView.adapter as VoucherAdapter).setSelectedIndex(index)
+                }
             }
         return v
 
@@ -49,10 +58,8 @@ class VoucherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        binding.textviewFirst.onse {
-//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-//        }
+        viewModel.products.observe(viewLifecycleOwner) {
+        }
     }
 
     override fun onDestroyView() {
