@@ -6,7 +6,7 @@
     public record CheckoutResponseForm(double AmountPaid);
     public record UserDataRequestForm(string Signature, string UserId);
     public record UserDataResponseForm(string[] AvailableVoucherIds, Transaction[] LastTransactions);
-    public record Product(string Id, int Price);
+    public record Product(string Id, double Price);
     public record Transaction(bool? DiscountNow, Product[] Products, string UserId, string? VoucherId);
 
     public record AcmeError(string ErrorMessage);
