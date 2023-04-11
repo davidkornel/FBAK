@@ -5,13 +5,25 @@ namespace AcmeBackend
 {
     public class AcmeManager
     {
-        private static string superMarketPublicKey = "<PublicKey>";
+        private static string superMarketPublicKey =
+            "-----BEGIN CERTIFICATE-----\n" +
+            "MIIBFTCBwKADAgECAgQAuPR8MA0GCSqGSIb3DQEBCwUAMBIxEDAOBgNVBAMTB0FjbWVLZXkwHhcN\n" +
+            "MjMwMzE5MTIxNjEwWhcNNDMwMzE5MTIxNjEwWjASMRAwDgYDVQQDEwdBY21lS2V5MFwwDQYJKoZI\n" +
+            "hvcNAQEBBQADSwAwSAJBAOPca9EgR9hTSVfgrvpbMTRfHiy473tw7Ok4g+sh6PdJS+nrEZbkqmXB\n" +
+            "HjFMiPzIgo9qOs0SPk5Kp5MKAiEFMjUCAwEAATANBgkqhkiG9w0BAQsFAANBAJ8BcI5d6Ymm5d2R\n" +
+            "KRKczwuLZHH05P0nuE8281q5srM7oUNym21y0tQht9oOwMD1Io4lxaVyhpAV26dCc2Jx/4s=\n" +
+            "-----END CERTIFICATE-----";
         private static Dictionary<string, User> users = new Dictionary<string, User>();
         public IResult RegisterUser([FromBody] RegistrationRequestForm registrationRequestForm)
         {
             try
             {
-                var newUser = new User(registrationRequestForm.UserPublicKey);
+                var newUser = new User(
+                    registrationRequestForm.PublicKey,
+                    registrationRequestForm.Name,
+                    registrationRequestForm.Surname,
+                    registrationRequestForm.Card
+                );
                 users[newUser.UserId] = newUser;
 
                 return Results.Ok(new RegistrationResponseForm(superMarketPublicKey, newUser.UserId));
