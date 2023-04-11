@@ -14,6 +14,7 @@ import com.example.userappify.model.Card
 import com.google.android.material.snackbar.Snackbar
 import com.example.userappify.model.RegistrationUser
 import com.google.android.material.textfield.TextInputEditText
+import org.json.JSONObject
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -54,10 +55,16 @@ class RegisterFragment : Fragment() {
         return data.username.matches(notEmptyStringRegex) and data.name.matches(notEmptyStringRegex) and data.surname.matches(
             notEmptyStringRegex
         ) and data.email.matches(emailRegex) and (data.password?.matches(passwordRegex)
-            ?: false) and data.card.number.matches(cardNumberRegex) and data.card.csv.matches(
+            ?: false) and data.card.number.matches(cardNumberRegex) and data.card.cvc.matches(
             cvvRegex
         )
 
+    }
+
+    private fun onResponse(response: JSONObject) {
+//        TODO save login logic
+        val intent = Intent(this.context, AuthenticatedActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -124,22 +131,10 @@ class RegisterFragment : Fragment() {
                 val pemCertificate = getPemCertificate()
                 registrationUser.publicKey = pemCertificate
 
-                try {
-                    val user = registerUser(registrationUser)
-                } catch (e: Exception) {
-                    Snackbar.make(
-                        view,
-                        "Server is not available, ${e.message}",
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .setAction("Action", null).show()
-                    return@setOnClickListener
+                this.context?.let { it1 ->
+                    registerUser(registrationUser, it1, onResponse = this::onResponse, view)
                 }
 
-                Snackbar.make(view, "Beep Boop Signing up ", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-                val intent = Intent(this.context, AuthenticatedActivity::class.java)
-                startActivity(intent)
             } catch (e: Exception) {
                 Snackbar.make(view, "Wrong input", Snackbar.LENGTH_SHORT).setAction("Action", null)
                     .show()

@@ -6,6 +6,6 @@ import java.util.*
 open class Card(
     var id: UUID,
     var number: String,
-    var csv: String,
+    var cvc: String,
     var expirationDate: Date
 ) : java.io.Serializable
