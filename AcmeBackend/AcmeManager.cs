@@ -18,7 +18,12 @@ namespace AcmeBackend
         {
             try
             {
-                var newUser = new User(registrationRequestForm.UserPublicKey);
+                var newUser = new User(
+                    registrationRequestForm.PublicKey,
+                    registrationRequestForm.Name,
+                    registrationRequestForm.Surname,
+                    registrationRequestForm.Card
+                );
                 users[newUser.UserId] = newUser;
 
                 return Results.Ok(new RegistrationResponseForm(superMarketPublicKey, newUser.UserId));
