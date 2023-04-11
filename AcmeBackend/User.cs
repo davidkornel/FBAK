@@ -13,7 +13,11 @@ namespace AcmeBackend
         public double AccDiscount { get; set; }
         public double SpendingUntilVoucher { get; set; }
 
-        public User(string publicKey)
+        string Name { get; set; }
+        string Surname { get; set; }
+        CardInfo Card { get; set; }
+
+        public User(string publicKey, string name, string surname, CardInfo card)
         {
             publicKey = publicKey
                 .Replace("-----BEGIN CERTIFICATE-----", null)
@@ -29,6 +33,10 @@ namespace AcmeBackend
             VoucherIds = new List<string>();
             AccDiscount = 0.0;
             SpendingUntilVoucher = 100.0;
+
+            Name = name;
+            Surname = surname;
+            Card = card;
         }
 
         public bool IsMessageValid(string? message, string signature)
