@@ -14,12 +14,12 @@ fun encode(checkout: Checkout): String {
 
 fun getCheckoutFromNamedProducts(
         named_products: ArrayList<NamedProduct>,
-        voucherId: UUID,
+        voucherId: UUID?,
         userId: UUID,
         discountNow: Boolean = false,
         signature: String
 ): Checkout {
-        var products = arrayListOf<Product>()
+        val products = arrayListOf<Product>()
         for (prod in named_products) {
                 products.add(Product(prod.id.toString(),prod.price.toInt()))
         }
