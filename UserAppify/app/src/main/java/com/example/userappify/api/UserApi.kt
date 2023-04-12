@@ -11,13 +11,13 @@ import com.example.userappify.model.RegistrationUser
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.json.JSONObject
-import kotlin.reflect.KFunction1
+import kotlin.reflect.KFunction2
 
 
 /**
  * Register user
  */
-fun registerUser(registrationUser: RegistrationUser, context: Context, onResponse: KFunction1<JSONObject, Unit>, view: View) {
+fun registerUser(registrationUser: RegistrationUser, context: Context, onResponse: KFunction2<JSONObject, RegistrationUser, Unit>, view: View) {
     val url = "$baseUrl/register"
     try {
         val gson = Gson()
@@ -26,7 +26,7 @@ fun registerUser(registrationUser: RegistrationUser, context: Context, onRespons
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST, url, JSONObject(gson.toJson(registrationUser)),
             { response ->
-                onResponse(response)
+                onResponse(response, registrationUser)
                 println("Response: %s".format(response.toString()))
             },
             { error ->

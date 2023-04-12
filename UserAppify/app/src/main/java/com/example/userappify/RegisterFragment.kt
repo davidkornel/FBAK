@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.userappify.api.registerUser
+import com.example.userappify.auth.AuthManager
 import com.example.userappify.databinding.FragmentRegisterBinding
 import com.example.userappify.deconding_utils.*
 import com.example.userappify.model.Card
 import com.google.android.material.snackbar.Snackbar
 import com.example.userappify.model.RegistrationUser
+import com.example.userappify.model.User
 import com.google.android.material.textfield.TextInputEditText
 import org.json.JSONObject
 import java.time.LocalDate
@@ -61,8 +63,24 @@ class RegisterFragment : Fragment() {
 
     }
 
-    private fun onResponse(response: JSONObject) {
-//        TODO save login logic
+    private fun onResponse(response: JSONObject, registrationUser: RegistrationUser) {
+        val userId = response.get("userId");
+        val superMarketPublicKey = response.get("superMarketPublicKey");
+        val user = User(
+            UUID.fromString(userId.toString()),
+            registrationUser.username,
+            registrationUser.password,
+            registrationUser.email,
+            registrationUser.name,
+            registrationUser.surname,
+            registrationUser.publicKey,
+            registrationUser.transactions,
+            registrationUser.vouchers,
+            registrationUser.card
+        )
+        val authManager = activity?.let { AuthManager(it) }
+        authManager?.setLoginUser(user);
+        authManager?.setBEPublicKey(superMarketPublicKey.toString());
         val intent = Intent(this.context, AuthenticatedActivity::class.java)
         startActivity(intent)
     }
