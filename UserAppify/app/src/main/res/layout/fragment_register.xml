@@ -17,16 +17,31 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gotham"
+                    android:text="ACME store"
+                    android:textColor="#000000"
+                    android:textSize="32sp" />
+
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/gotham"
-                android:text="@string/good"
-                android:textColor="#000000"
-                android:textSize="32sp" />
+                android:layout_weight="1"
+                android:text="Registration" />
 
         </LinearLayout>
 
@@ -50,18 +65,16 @@
             android:textColorHint="#000000">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_name"
+                android:id="@+id/register_username"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:autofillHints=""
                 android:drawablePadding="16dp"
-                android:drawableEnd="@drawable/ic_email_white_24dp"
                 android:fontFamily="@font/calibri"
-                android:hint="@string/name"
-                android:inputType="textPersonName"
+                android:hint="Nickname"
+                android:inputType="text"
                 android:maxLines="1"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:autofillHints="" />
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -70,18 +83,40 @@
             android:textColorHint="#000000">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_username"
+                android:id="@+id/register_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:autofillHints=""
                 android:drawablePadding="16dp"
-                android:drawableEnd="@drawable/ic_email_white_24dp"
                 android:fontFamily="@font/calibri"
-                android:hint="@string/username"
-                android:inputType="text"
+                android:hint="@string/name"
+                android:inputType="textPersonName"
                 android:maxLines="1"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:autofillHints="" />
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_surname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Surname" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_email_white_24dp"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -106,23 +141,44 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#000000">
+            android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_bankcard"
+                android:id="@+id/register_card_number"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawablePadding="16dp"
-                android:drawableEnd="@drawable/ic_lock_white_24dp"
-                android:fontFamily="@font/calibri"
-                android:hint="@string/bank_card_information"
-                android:inputType="textCapCharacters"
-                android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:autofillHints="" />
+                android:layout_height="wrap_content"
+                android:hint="Card number"
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_card_expiration_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Expiration date"
+                android:inputType="date" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_card_csv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="CVV"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#000000"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -160,17 +216,6 @@
 
 
         </LinearLayout>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/calibri"
-            android:text="@string/forgot_password"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="16sp" />
 
 
     </LinearLayout>

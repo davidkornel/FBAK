@@ -3,7 +3,13 @@ package com.example.userappify.deconding_utils
 object Constants {
     const val ANDROID_KEYSTORE = "AndroidKeyStore"
     const val ENC_ALGO = "RSA/NONE/PKCS1Padding"
-    const val keyname = "AcmeKey"
+    const val serversKeyName = "AcmeKey"
+    const val usersKeyName = "AcmeUserKey"
+    const val KEY_SIZE = 512
+    const val KEY_ALGO = "RSA"
+    const val SIGN_ALGO = "SHA256WithRSA"
+    const val keyname = "myIdKey"
+    const val serialNr = 1234567890L
     // PAY ATTENTION TO THIS CERTIFICATE !! IF IT'S NOT PERFECTLY THIS, IT'S NOT PARSEABLE
     const val THE_CERT = "-----BEGIN CERTIFICATE-----\n" +
             "MIIBFTCBwKADAgECAgQAuPR8MA0GCSqGSIb3DQEBCwUAMBIxEDAOBgNVBAMTB0FjbWVLZXkwHhcN\n" +

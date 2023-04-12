@@ -51,7 +51,7 @@ fun readKey() {
         val cert = KeyStore.getInstance(Constants.ANDROID_KEYSTORE).run {
             load(null)
             Log.d("APP","Trying to GET the cert")
-            getCertificate(Constants.keyname)
+            getCertificate(Constants.serversKeyName)
         }
         Log.d("APP","Got certificate")
         if (cert != null) {
