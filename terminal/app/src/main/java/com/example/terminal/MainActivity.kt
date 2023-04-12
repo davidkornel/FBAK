@@ -1,58 +1,84 @@
 package com.example.terminal
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import com.example.terminal.databinding.ActivityMainBinding
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
+import java.util.*
 
+/* Utility top-level function */
+fun byteArrayToHex(ba: ByteArray): String {
+    val sb = StringBuilder(ba.size * 2)
+    for (b in ba) sb.append(String.format("%02x", b))
+    return sb.toString()
+}
+
+private const val ACTION_SCAN = "com.google.zxing.client.android.SCAN"
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
-
+    private val btScanQr by lazy { findViewById<Button>(R.id.bt_scan_qr) }
+    private val tvError by lazy { findViewById<TextView>(R.id.tv_error_main) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        btScanQr.setOnClickListener { scanQRCode() }
+    }
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+    }
 
-        setSupportActionBar(binding.toolbar)
-
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+    private fun scanQRCode() {
+        try {
+            // Intent with filter ACTION_SCAN
+            val intent = Intent(ACTION_SCAN).apply {
+                putExtra("SCAN_MODE", "QR_CODE_MODE" ) }
+            startActivityForResult(intent, 0)
+        }
+        catch (e: ActivityNotFoundException) {
+            showDialog(this, "No Scanner Found", "Download a scanner code app?", "Yes", "No").show()
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val intent = Intent(this, CheckoutActivity::class.java)
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                val contents = data?.getStringExtra("SCAN_RESULT")
+                if (contents != null) {
+                    intent.putExtra("text",contents)
+                    startActivity(intent)
+                }
+                else
+                    tvError.text = "CAN'T READ THE QR CODE !"
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+            }
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+    private fun showDialog(act: Activity, title: CharSequence, message: CharSequence, buttonYes: CharSequence, buttonNo: CharSequence): android.app.AlertDialog {
+        val downloadDialog = android.app.AlertDialog.Builder(act)
+        downloadDialog.setTitle(title)
+        downloadDialog.setMessage(message)
+        downloadDialog.setPositiveButton(buttonYes) { _, _ ->
+            // possiamo passare package name per installare il qr code reader esterno se non già installato
+            val uri = Uri.parse("market://search?q=pname:com.google.zxing.client.android")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            act.startActivity(intent)
+        }
+        downloadDialog.setNegativeButton(buttonNo, null)
+        return downloadDialog.create()
     }
 }
