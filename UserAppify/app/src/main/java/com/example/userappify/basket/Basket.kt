@@ -21,7 +21,7 @@ fun getCheckoutFromNamedProducts(
 ): Checkout {
         val products = arrayListOf<Product>()
         for (prod in named_products) {
-                products.add(Product(prod.id.toString(),prod.price.toInt()))
+                products.add(Product(prod.id.toString(),prod.price))
         }
         return Checkout(products,userId.toString(),voucherId.toString(),discountNow,signature)
 }
