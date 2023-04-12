@@ -13,9 +13,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.userappify.R
+import com.example.userappify.auth.AuthManager
 import com.example.userappify.model.NamedProduct
 import com.example.userappify.model.ProductHashViewModel
-import java.util.UUID
 
 class CartFragment : Fragment() {
 
@@ -39,13 +39,15 @@ class CartFragment : Fragment() {
         val listView = v.findViewById<ListView>(R.id.list_view_products)
         productAdapter = ProductAdapter(requireContext(), viewModel.products.value as ArrayList<NamedProduct>,viewModel)
         listView.adapter = productAdapter
+        val auth = activity?.let { AuthManager(it) }
         v.findViewById<Button>(R.id.btn_checkout).setOnClickListener {
             val checkout = getCheckoutFromNamedProducts(
                 viewModel.products.value as ArrayList<NamedProduct>,
                 viewModel.getSelectedVoucher()?.id,
-                UUID.randomUUID(),
+                auth!!.getLoginUser()!!.id,
                 cbDiscount.isChecked,
                 "signature"
+//                getPubKey().toString()
             )
             // encode as json
             val coJson = encode(checkout)
