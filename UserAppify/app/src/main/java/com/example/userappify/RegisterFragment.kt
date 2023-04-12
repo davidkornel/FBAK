@@ -49,8 +49,12 @@ class RegisterFragment : Fragment() {
     }
 
     fun isRegistrationDataValid(data: RegistrationUser): Boolean {
-        val notEmptyStringRegex = Regex("(([A-Z]+|[a-z]+))")
-        val passwordRegex = Regex("(([A-Z]+|[a-z]+)){8}")
+        val notEmptyStringRegex = Regex("([A-Z]+[a-z]+)") //Uppercase then lowercase
+        val passwordRegex = Regex("^" +
+                "(?=.*[@#$%^&+=])" +     // at least 1 special character
+                "(?=\\S+$)" +            // no white spaces
+                ".{4,}" +                // at least 4 characters
+                "$")
         val cvvRegex = Regex("(\\d\\d\\d)")
         val cardNumberRegex = Regex("(\\d{16})")
         val emailRegex = Regex("^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.+)")
