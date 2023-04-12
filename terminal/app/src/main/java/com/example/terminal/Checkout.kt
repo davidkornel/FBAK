@@ -2,10 +2,10 @@ package com.example.terminal
 
 import com.google.gson.Gson
 import java.util.UUID
-// TODO fix the datamodel when the server's datamodel is fixed
+
 data class Product (
     val id : String,
-    val price: Int
+    val price: Double
         )
 class Checkout (
     val products: List<Product>,
@@ -20,12 +20,12 @@ data class Response (
         )
 
 var products = arrayListOf<Product>(
-    Product(UUID.randomUUID().toString(),3),
-    Product(UUID.randomUUID().toString(),4),
-    Product(UUID.randomUUID().toString(),4),
-    Product(UUID.randomUUID().toString(),4),
-    Product(UUID.randomUUID().toString(),4),
-    Product(UUID.randomUUID().toString(),4)
+    Product(UUID.randomUUID().toString(),3.0),
+    Product(UUID.randomUUID().toString(),4.0),
+    Product(UUID.randomUUID().toString(),4.0),
+    Product(UUID.randomUUID().toString(),4.0),
+    Product(UUID.randomUUID().toString(),4.0),
+    Product(UUID.randomUUID().toString(),4.0)
 )
 
 var checkout = Checkout(products,UUID.randomUUID().toString(), signature = "user_signature")
