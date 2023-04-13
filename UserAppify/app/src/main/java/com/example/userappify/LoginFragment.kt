@@ -27,8 +27,12 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private fun areLoginDataValid(username: String, password: String): Boolean {
-        val notEmptyStringRegex = Regex("(([A-Z]+|[a-z]+))")
-        val passwordRegex = Regex("(([A-Z]+|[a-z]+)){8}")
+        val notEmptyStringRegex = Regex("([A-Z]+[a-z]+)") //Uppercase then lowercase
+        val passwordRegex = Regex("^" +
+                "(?=.*[@#$%^&+=])" +     // at least 1 special character
+                "(?=\\S+$)" +            // no white spaces
+                ".{4,}" +                // at least 4 characters
+                "$")
         return username.matches(notEmptyStringRegex) and password.matches(passwordRegex)
     }
 
