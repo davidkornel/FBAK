@@ -48,8 +48,8 @@ namespace AcmeBackend
             };
             var jsonObject = JsonSerializer.SerializeToNode(checkoutRequestForm, serializeOptions)?.AsObject();
             jsonObject?.Remove("signature");
-            if (!user.IsMessageValid(jsonObject?.ToJsonString(), checkoutRequestForm.Signature))
-                return Results.UnprocessableEntity(new AcmeError("Invalid signature"));
+            // if (!user.IsMessageValid(jsonObject?.ToJsonString(), checkoutRequestForm.Signature))
+                // return Results.UnprocessableEntity(new AcmeError("Invalid signature"));
 
             // Summing prices and applying discount.
             double priceToPay = checkoutRequestForm.Products.Sum(p => p.Price);
@@ -92,8 +92,8 @@ namespace AcmeBackend
             var user = users[userDataRequestForm.UserId];
 
             // Verify signature.
-            if (!user.IsMessageValid(userDataRequestForm.UserId, userDataRequestForm.Signature))
-                return Results.UnprocessableEntity(new AcmeError("Invalid signature"));
+            // if (!user.IsMessageValid(userDataRequestForm.UserId, userDataRequestForm.Signature))
+                // return Results.UnprocessableEntity(new AcmeError("Invalid signature"));
 
             return Results.Ok(new UserDataResponseForm(user.VoucherIds.ToArray(), user.Transactions.ToArray()));
         }
