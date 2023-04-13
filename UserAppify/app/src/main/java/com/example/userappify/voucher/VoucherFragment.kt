@@ -71,7 +71,7 @@ class VoucherFragment : Fragment() {
     }
     private fun onResponse(response: JSONObject, request: UserDataRequest) {
         val userDataResponse = Gson().fromJson(response.toString(), UserDataResponse::class.java)
-        viewModel.updateVouchers(getVouchersFromIds(userDataResponse.availableVouchersId))
+        viewModel.updateVouchers(getVouchersFromIds(userDataResponse.availableVoucherIds))
         voucherAdapter.notifyDataSetChanged()
     }
 
