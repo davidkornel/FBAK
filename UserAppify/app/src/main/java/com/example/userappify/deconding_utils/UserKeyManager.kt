@@ -161,6 +161,13 @@ fun decryptResult(content: ByteArray, result: ByteArray) {
 }
 
 /**
+ * sign string content
+ */
+fun signContent(content: String): String {
+    return signContent(content.toByteArray());
+}
+
+/**
  * Sign contetn
  */
 fun signContent(content: ByteArray): String {
