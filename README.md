@@ -20,6 +20,15 @@ Repository for the Mobile Computing course's group work.
 <img src="./docs/imgs/tags/Ice_cream.png" width="20%" height="20%" /> 
 <img src="./docs/imgs/tags/Hamburger.png" width="20%" height="20%" /> 
 
+## Registration and Login
+
+Be aware that every build clears storage (uninstalls and installs the app) so login information are lost. 
+
+## Private/public key access
+
+There is a `UserKeyManager.kt` file which consists access to the private/public keys. Also it has some methods for decoding/signing from the teacher. The key pairs are generation during registration so be aware that the keys are not there if you didn't register.
+
+
 ## Code to import public key
 
 ```
