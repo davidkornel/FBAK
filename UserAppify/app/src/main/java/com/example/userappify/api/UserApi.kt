@@ -8,6 +8,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.userappify.api.Constants.baseUrl
 import com.example.userappify.model.RegistrationUser
+import com.example.userappify.model.UserDataRequest
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.json.JSONObject
@@ -57,44 +58,32 @@ fun registerUser(registrationUser: RegistrationUser, context: Context, onRespons
 /**
  * Get PAST TRANSACTIONS and available VOUCHERS
  */
-
-private val gson = Gson()
-
-private fun readStream(input: InputStream): String {
-    var reader: BufferedReader? = null
-    var line: String?
-    val response = StringBuilder()
+fun getUserData(request: UserDataRequest, context: Context, onResponse: KFunction2<JSONObject, UserDataRequest, Unit>, view: View) {
+    val url = "$baseUrl/userdata"
     try {
-        reader = BufferedReader(InputStreamReader(input))
-        while (reader.readLine().also{ line = it } != null)
-            response.append(line)
-    }
-    catch (e: IOException) {
-        response.clear()
-        response.append("readStream: ${e.message}")
-    }
-    reader?.close()
-    return response.toString()
-}
+        val gson = Gson()
+        // Instantiate the RequestQueue.
+        val queue = Volley.newRequestQueue(context)
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST, url, JSONObject(gson.toJson(request)),
+            { response ->
+                onResponse(response, request)
+                println("Response: %s".format(response.toString()))
+            },
+            { error ->
+                Snackbar.make(
+                    view,
+                    "Server is not available, ${error.message}",
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setAction("Action", null).show()
+            }
+        )
 
-fun getUserData(): UserDataResponse {
-    val urlRoute = "/userdata"
-    val url = URL("http://10.0.2.2:5107$urlRoute")
-    var urlConnection: HttpURLConnection? = null
-    var userDataResponse = UserDataResponse(listOf(), listOf())
-    try {
-        urlConnection = (url.openConnection() as HttpURLConnection).apply {
-            doInput = true
-            setRequestProperty("Content-Type", "application/json")
-            useCaches = false
-            connectTimeout = 5000
-            if (responseCode == 200)
-                userDataResponse = gson.fromJson(readStream(inputStream),UserDataResponse::class.java)
-        }
+// Add the request to the RequestQueue.
+        queue.add(jsonObjectRequest)
     } catch (e: Exception) {
-        return userDataResponse
+        e.message?.let { Log.d("APP", it) }
+        throw e
     }
-    urlConnection?.disconnect()
-    Log.d("USERDATA",userDataResponse.toString())
-    return userDataResponse
 }

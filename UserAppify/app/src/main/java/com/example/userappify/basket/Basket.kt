@@ -34,7 +34,7 @@ fun getCheckoutToSign(
 ): CheckoutToSign {
         val products = arrayListOf<Product>()
         for (prod in named_products) {
-                products.add(Product(prod.id.toString(),prod.price.toInt()))
+                products.add(Product(prod.id.toString(),prod.price))
         }
         return CheckoutToSign(discountNow,products, userId.toString(),voucherId.toString())
 //        return CheckoutToSign(products,userId.toString(),voucherId.toString(),discountNow)

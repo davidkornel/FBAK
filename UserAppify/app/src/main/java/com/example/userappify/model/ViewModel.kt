@@ -16,8 +16,7 @@ class ProductHashViewModel : ViewModel() {
 
     init {
         _products.value = mutableListOf()
-        _vouchers.value = mutableListOf(Voucher(UUID.randomUUID(), false, 15.0),
-            Voucher(UUID.randomUUID(), true, 69.0))
+        _vouchers.value = mutableListOf()
     }
 
     fun getProducts(): MutableLiveData<MutableList<NamedProduct>> {
@@ -30,7 +29,6 @@ class ProductHashViewModel : ViewModel() {
 
     fun addHashedProduct(product: NamedProduct) {
         _products.value?.add(product)
-        println(_products.value)
     }
 
     fun removeProduct(product: NamedProduct) {
@@ -41,4 +39,12 @@ class ProductHashViewModel : ViewModel() {
         _products.value!!.clear()
 
     }
+
+    fun updateVouchers(newVouchers: List<Voucher>) {
+        _vouchers.value!!.clear()
+        for (v in newVouchers) {
+            _vouchers.value?.add(v)
+        }
+    }
+
 }
