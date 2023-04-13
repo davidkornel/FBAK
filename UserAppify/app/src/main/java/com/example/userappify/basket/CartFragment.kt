@@ -2,6 +2,7 @@ package com.example.userappify.basket
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +15,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.userappify.R
 import com.example.userappify.auth.AuthManager
+import com.example.userappify.deconding_utils.getPemCertificate
+import com.example.userappify.deconding_utils.getPubKey
+import com.example.userappify.deconding_utils.signContent
 import com.example.userappify.model.NamedProduct
 import com.example.userappify.model.ProductHashViewModel
+import com.google.gson.Gson
+import java.util.Base64.getEncoder
 
 class CartFragment : Fragment() {
 
@@ -40,15 +46,22 @@ class CartFragment : Fragment() {
         productAdapter = ProductAdapter(requireContext(), viewModel.products.value as ArrayList<NamedProduct>,viewModel)
         listView.adapter = productAdapter
         val auth = activity?.let { AuthManager(it) }
+
+        val checkoutToSign = getCheckoutToSign(cbDiscount.isChecked, viewModel.products.value as ArrayList<NamedProduct>,
+            auth!!.getLoginUser()!!.id, viewModel.getSelectedVoucher()?.id,)
+
+        val signedContent = signContent(Gson().toJson(checkoutToSign).toString())
+        val dick = getEncoder().encodeToString(signedContent.toByteArray())
+
         v.findViewById<Button>(R.id.btn_checkout).setOnClickListener {
             val checkout = getCheckoutFromNamedProducts(
                 viewModel.products.value as ArrayList<NamedProduct>,
                 viewModel.getSelectedVoucher()?.id,
-                auth!!.getLoginUser()!!.id,
+                auth.getLoginUser()!!.id,
                 cbDiscount.isChecked,
-                "signature"
-//                getPubKey().toString()
+                dick
             )
+
             // encode as json
             val coJson = encode(checkout)
             Log.d("DEBUG",coJson)

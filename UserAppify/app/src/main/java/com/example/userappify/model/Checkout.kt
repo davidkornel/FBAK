@@ -11,3 +11,10 @@ data class Checkout (
     val discountNow: Boolean = false,
     val signature: String
 )
+
+data class CheckoutToSign (
+    val discountNow: Boolean = false,
+    val products: List<Product>,
+    val userId: String,
+    val voucherId: String? = null
+)

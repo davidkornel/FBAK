@@ -25,3 +25,17 @@ fun getCheckoutFromNamedProducts(
         }
         return Checkout(products,userId.toString(),voucherId.toString(),discountNow,signature)
 }
+
+fun getCheckoutToSign(
+        discountNow: Boolean = false,
+        named_products: ArrayList<NamedProduct>,
+        userId: UUID,
+        voucherId: UUID?
+): CheckoutToSign {
+        val products = arrayListOf<Product>()
+        for (prod in named_products) {
+                products.add(Product(prod.id.toString(),prod.price.toInt()))
+        }
+        return CheckoutToSign(discountNow,products, userId.toString(),voucherId.toString())
+//        return CheckoutToSign(products,userId.toString(),voucherId.toString(),discountNow)
+}
