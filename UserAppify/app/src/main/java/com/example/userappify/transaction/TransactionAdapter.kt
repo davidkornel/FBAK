@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.userappify.R
 import com.example.userappify.model.Transaction
-import com.example.userappify.model.Voucher
 
 
 class TransactionAdapter(private val ctx: Context, val transactions: Array<Transaction>) :

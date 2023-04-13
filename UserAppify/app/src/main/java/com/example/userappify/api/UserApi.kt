@@ -12,6 +12,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.json.JSONObject
 import kotlin.reflect.KFunction2
+import com.example.userappify.model.UserDataResponse
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 
 /**
@@ -45,4 +52,49 @@ fun registerUser(registrationUser: RegistrationUser, context: Context, onRespons
         e.message?.let { Log.d("APP", it) }
         throw e
     }
+}
+
+/**
+ * Get PAST TRANSACTIONS and available VOUCHERS
+ */
+
+private val gson = Gson()
+
+private fun readStream(input: InputStream): String {
+    var reader: BufferedReader? = null
+    var line: String?
+    val response = StringBuilder()
+    try {
+        reader = BufferedReader(InputStreamReader(input))
+        while (reader.readLine().also{ line = it } != null)
+            response.append(line)
+    }
+    catch (e: IOException) {
+        response.clear()
+        response.append("readStream: ${e.message}")
+    }
+    reader?.close()
+    return response.toString()
+}
+
+fun getUserData(): UserDataResponse {
+    val urlRoute = "/userdata"
+    val url = URL("http://10.0.2.2:5107$urlRoute")
+    var urlConnection: HttpURLConnection? = null
+    var userDataResponse = UserDataResponse(listOf(), listOf())
+    try {
+        urlConnection = (url.openConnection() as HttpURLConnection).apply {
+            doInput = true
+            setRequestProperty("Content-Type", "application/json")
+            useCaches = false
+            connectTimeout = 5000
+            if (responseCode == 200)
+                userDataResponse = gson.fromJson(readStream(inputStream),UserDataResponse::class.java)
+        }
+    } catch (e: Exception) {
+        return userDataResponse
+    }
+    urlConnection?.disconnect()
+    Log.d("USERDATA",userDataResponse.toString())
+    return userDataResponse
 }
