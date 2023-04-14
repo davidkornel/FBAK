@@ -43,7 +43,7 @@ namespace AcmeBackend
         {
             if (message is null)
                 return true;
-            return PublicKey.VerifyHash(Encoding.UTF8.GetBytes(message), Convert.FromBase64String(signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            return PublicKey.VerifyData(Encoding.UTF8.GetBytes(message), Convert.FromBase64String(signature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         }
     }
 }
