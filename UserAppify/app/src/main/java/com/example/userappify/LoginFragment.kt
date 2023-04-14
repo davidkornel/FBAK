@@ -7,10 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.userappify.api.registerUser
 import com.example.userappify.auth.AuthManager
 import com.example.userappify.databinding.FragmentLoginBinding
-import com.example.userappify.deconding_utils.getPemCertificate
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import java.util.*

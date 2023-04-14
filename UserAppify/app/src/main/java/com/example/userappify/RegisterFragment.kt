@@ -2,6 +2,7 @@ package com.example.userappify
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -145,12 +146,14 @@ class RegisterFragment : Fragment() {
                 }
 
                 // check if key exists
-                if (!keysPresent()) {
-                    generateAndStoreKeys(requireContext())
+                if (!checkKeyExists()) {
+                    //generateAndStoreKeys(requireContext())
+                    generateKey()
                 }
 
 
                 val pemCertificate = getPemCertificate()
+                Log.d("cert",pemCertificate)
                 registrationUser.publicKey = pemCertificate
 
                 this.context?.let { it1 ->
