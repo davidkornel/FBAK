@@ -15,10 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.userappify.R
 import com.example.userappify.auth.AuthManager
-import com.example.userappify.deconding_utils.getPemCertificate
-import com.example.userappify.deconding_utils.getPubKey
-import com.example.userappify.deconding_utils.signContent
+import com.example.userappify.deconding_utils.*
 import com.example.userappify.model.NamedProduct
+import com.example.userappify.model.Product
 import com.example.userappify.model.ProductHashViewModel
 import com.google.gson.Gson
 import java.util.Base64.getEncoder
@@ -48,10 +47,13 @@ class CartFragment : Fragment() {
         val auth = activity?.let { AuthManager(it) }
 
         val checkoutToSign = getCheckoutToSign(cbDiscount.isChecked, viewModel.products.value as ArrayList<NamedProduct>,
-            auth!!.getLoginUser()!!.id, viewModel.getSelectedVoucher()?.id,)
-
-        val signedContent = signContent(Gson().toJson(checkoutToSign).toString())
-        val dick = getEncoder().encodeToString(signedContent.toByteArray())
+            auth!!.getLoginUser()!!.id, viewModel.getSelectedVoucher()?.id)
+        Log.d("content",Gson().toJson(checkoutToSign).toString())
+        val signedContent = signData(Gson().toJson(checkoutToSign).toString())
+        Log.d("signed",signedContent)
+        /*val dick = getEncoder().encodeToString(signedContent.toByteArray())
+        Log.d("dick",dick)*/
+        Log.d("verify",verifyData(signedContent,Gson().toJson(checkoutToSign).toString()).toString())
 
         v.findViewById<Button>(R.id.btn_checkout).setOnClickListener {
             val checkout = getCheckoutFromNamedProducts(
@@ -59,12 +61,12 @@ class CartFragment : Fragment() {
                 viewModel.getSelectedVoucher()?.id,
                 auth.getLoginUser()!!.id,
                 cbDiscount.isChecked,
-                dick
+                signedContent
             )
 
             // encode as json
             val coJson = encode(checkout)
-            Log.d("DEBUG",coJson)
+            Log.d("reqJson",coJson)
             // After the checkout the cart has to be empty
             viewModel.removeAllProd()
             productAdapter.notifyDataSetChanged()

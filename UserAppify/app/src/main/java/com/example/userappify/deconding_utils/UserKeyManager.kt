@@ -2,12 +2,14 @@ package com.example.userappify.deconding_utils
 
 import android.content.Context
 import android.security.KeyPairGeneratorSpec
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyPermanentlyInvalidatedException
+import android.security.keystore.KeyProperties
 import android.util.Base64
 import android.util.Log
+import android.widget.Toast
 import java.math.BigInteger
-import java.security.KeyPairGenerator
-import java.security.KeyStore
-import java.security.Signature
+import java.security.*
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.util.*
@@ -43,19 +45,19 @@ fun byteArrayToHex(ba: ByteArray): String {
 data class PubKey(var modulus: ByteArray, var exponent: ByteArray)
 
 
-fun keysPresent(): Boolean {
+/*fun keysPresent(): Boolean {
     val entry = KeyStore.getInstance(Constants.ANDROID_KEYSTORE).run {
         load(null)
         getEntry(Constants.usersKeyName, null)
     }
     return (entry != null)
-}
+}*/
 
 /**
  * generates key
  * @throws error when key alredy exists
  */
-fun generateAndStoreKeys(context: Context): Boolean {
+/*fun generateAndStoreKeys(context: Context): Boolean {
     try {
         if (!keysPresent()) {
             val spec = KeyPairGeneratorSpec.Builder(context)
@@ -76,12 +78,112 @@ fun generateAndStoreKeys(context: Context): Boolean {
         return false
     }
     return true
+}*/
+
+private lateinit var keyPair: KeyPair
+fun generateKey() {
+    //We create the start and expiry date for the key
+    val startDate = GregorianCalendar()
+    val endDate = GregorianCalendar()
+    endDate.add(Calendar.YEAR, 1)
+
+    //We are creating a RSA key pair and store it in the Android Keystore
+    val keyPairGenerator: KeyPairGenerator =
+        KeyPairGenerator.getInstance(Constants.KEY_ALGO, Constants.ANDROID_KEYSTORE)
+
+    //We are creating the key pair with sign and verify purposes
+    val parameterSpec: KeyGenParameterSpec = KeyGenParameterSpec.Builder(
+        Constants.usersKeyName,
+        KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
+    ).run {
+        setCertificateSerialNumber(Constants.serialNr.toBigInteger())       //Serial number used for the self-signed certificate of the generated key pair, default is 1
+        setCertificateSubject(X500Principal("CN=" + Constants.usersKeyName))     //Subject used for the self-signed certificate of the generated key pair, default is CN=fake
+        setDigests(KeyProperties.DIGEST_SHA256)                         //Set of digests algorithms with which the key can be used
+        setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1) //Set of padding schemes with which the key can be used when signing/verifying
+        setCertificateNotBefore(startDate.time)                         //Start of the validity period for the self-signed certificate of the generated, default Jan 1 1970
+        setCertificateNotAfter(endDate.time)                            //End of the validity period for the self-signed certificate of the generated key, default Jan 1 2048
+        build()
+    }
+
+    //Initialization of key generator with the parameters we have specified above
+    keyPairGenerator.initialize(parameterSpec)
+
+    //Generates the key pair
+    keyPair = keyPairGenerator.genKeyPair()
 }
+
+fun checkKeyExists(): Boolean {
+    //We get the Keystore instance
+    val keyStore: KeyStore = KeyStore.getInstance(Constants.ANDROID_KEYSTORE).apply {
+        load(null)
+    }
+
+    //We get the private and public key from the keystore if they exists
+    val privateKey: PrivateKey? = keyStore.getKey(Constants.usersKeyName, null) as PrivateKey?
+    val publicKey: PublicKey? = keyStore.getCertificate(Constants.usersKeyName)?.publicKey
+
+    return privateKey != null && publicKey != null
+}
+
+fun signData(content: String): String {
+    var signatureRes = ""
+    try {
+        //We get the Keystore instance
+        val keyStore: KeyStore = KeyStore.getInstance(Constants.ANDROID_KEYSTORE).apply {
+            load(null)
+        }
+
+        //Retrieves the private key from the keystore
+        val privateKey: PrivateKey = keyStore.getKey(Constants.usersKeyName, null) as PrivateKey
+        Log.d("prKey",privateKey.toString())
+        //We sign the data with the private key. We use RSA algorithm along SHA-256 digest algorithm
+        val signature: ByteArray? = Signature.getInstance("SHA256withRSA").run {
+            initSign(privateKey)
+            update(content.toByteArray())
+            sign()
+        }
+
+        if (signature != null) {
+            //We encode and store in a variable the value of the signature
+            signatureRes = Base64.encodeToString(signature, Base64.DEFAULT)
+        }
+
+    } catch (e: Exception) {
+        throw RuntimeException(e)
+    }
+
+    return signatureRes
+}
+
+fun verifyData(signatureRes: String,content: String): Boolean {
+    //We get the Keystore instance
+    val keyStore: KeyStore = KeyStore.getInstance(Constants.ANDROID_KEYSTORE).apply {
+        load(null)
+    }
+
+    //We get the certificate from the keystore
+    val certificate = keyStore.getCertificate(Constants.usersKeyName)
+
+    if (certificate != null) {
+        //We decode the signature value
+        val signature: ByteArray = Base64.decode(signatureRes, Base64.DEFAULT)
+
+        //We check if the signature is valid. We use RSA algorithm along SHA-256 digest algorithm
+        val isValid: Boolean = Signature.getInstance("SHA256withRSA").run {
+            initVerify(certificate)
+            update(content.toByteArray())
+            verify(signature)
+        }
+        return isValid
+    }
+    return false
+}
+
 
 /*
  *      Menu - show keys functionality
  */
-fun getPubKey(): PubKey {
+/*fun getPubKey(): PubKey {
     val pKey = PubKey(ByteArray(0), ByteArray(0))
     try {
         val entry = KeyStore.getInstance(Constants.ANDROID_KEYSTORE).run {
@@ -111,7 +213,7 @@ fun getPrivExp(): ByteArray {
         ex.message?.let { Log.d("APP", it) }
     }
     return exp
-}
+}*/
 
 
 /**
@@ -163,14 +265,14 @@ fun decryptResult(content: ByteArray, result: ByteArray) {
 /**
  * sign string content
  */
-fun signContent(content: String): String {
+/*fun signContent(content: String): String {
     return signContent(content.toByteArray());
-}
+}*/
 
 /**
  * Sign contetn
  */
-fun signContent(content: ByteArray): String {
+/*fun signContent(content: ByteArray): String {
     if (content.isEmpty()) return ""
     var clear = ByteArray(0)
     try {
@@ -190,9 +292,9 @@ fun signContent(content: ByteArray): String {
         e.message?.let { Log.d("APP", it) }
         throw e
     }
-}
+}*/
 
-fun verifySignature(content: ByteArray, result: ByteArray): Boolean {
+/*fun verifySignature(content: ByteArray, result: ByteArray): Boolean {
     if (content.isEmpty() || result.isEmpty()) return false
     try {
         val entry = KeyStore.getInstance(Constants.ANDROID_KEYSTORE).run {
@@ -210,7 +312,7 @@ fun verifySignature(content: ByteArray, result: ByteArray): Boolean {
         e.message?.let { Log.d("APP", it) }
         throw e
     }
-}
+}*/
 
 fun getPemCertificate(): String {
     try {

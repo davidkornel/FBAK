@@ -29,6 +29,7 @@ fun checkoutUser(
         val gson = Gson()
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(context)
+        Log.d("cane",JSONObject(gson.toJson(checkout)).toString())
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST, url, JSONObject(gson.toJson(checkout)),
             { response ->
@@ -36,7 +37,7 @@ fun checkoutUser(
                 println("Response: %s".format(response.toString()))
             },
             { error ->
-                println(error)
+                Log.d("CANE",error.toString())
                 act.writeText("PAYMENT FAILED!")
                 act.setImg(R.drawable.outline_error_outline_24)
             }
