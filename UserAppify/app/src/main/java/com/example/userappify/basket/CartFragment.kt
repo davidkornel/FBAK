@@ -46,16 +46,13 @@ class CartFragment : Fragment() {
         listView.adapter = productAdapter
         val auth = activity?.let { AuthManager(it) }
 
-        val checkoutToSign = getCheckoutToSign(cbDiscount.isChecked, viewModel.products.value as ArrayList<NamedProduct>,
-            auth!!.getLoginUser()!!.id, viewModel.getSelectedVoucher()?.id)
-        Log.d("content",Gson().toJson(checkoutToSign).toString())
-        val signedContent = signData(Gson().toJson(checkoutToSign).toString())
-        Log.d("signed",signedContent)
-        /*val dick = getEncoder().encodeToString(signedContent.toByteArray())
-        Log.d("dick",dick)*/
-        Log.d("verify",verifyData(signedContent,Gson().toJson(checkoutToSign).toString()).toString())
-
         v.findViewById<Button>(R.id.btn_checkout).setOnClickListener {
+            val checkoutToSign = getCheckoutToSign(cbDiscount.isChecked, viewModel.products.value as ArrayList<NamedProduct>,
+                auth!!.getLoginUser()!!.id, viewModel.getSelectedVoucher()?.id)
+            Log.d("content",Gson().toJson(checkoutToSign).toString())
+            val signedContent = signData(Gson().toJson(checkoutToSign).toString())
+            Log.d("signed",signedContent)
+            Log.d("verify",verifyData(signedContent,Gson().toJson(checkoutToSign).toString()).toString())
             val checkout = getCheckoutFromNamedProducts(
                 viewModel.products.value as ArrayList<NamedProduct>,
                 viewModel.getSelectedVoucher()?.id,
