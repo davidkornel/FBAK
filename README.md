@@ -10,6 +10,10 @@ Repository for the Mobile Computing course's group work.
 
 [Figma prototype](https://www.figma.com/file/4Y4rR6XdTI61CnZNyBUSGq/Acme-electorinc-store?node-id=0%3A1&t=guwb6qmTbyyXrwBA-1)
 
+## Terminal app
+
+For terminal app to work you need to install this on emulator. https://apkpure.com/it/barcode-scanner/com.google.zxing.client.android/download
+
 ## QR Codes 
 
 <img src="./docs/imgs/tags/Wine.png" width="20%" height="20%" /> 
