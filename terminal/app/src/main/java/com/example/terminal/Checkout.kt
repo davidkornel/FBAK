@@ -18,7 +18,9 @@ class Checkout (
 data class Response (
     val totalAmountPaid: Double
         )
-
+data class ErrorResponse (
+    val errorMsg: String
+        )
 var products = arrayListOf<Product>(
     Product(UUID.randomUUID().toString(),3.0),
     Product(UUID.randomUUID().toString(),4.0),

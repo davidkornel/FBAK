@@ -51,6 +51,8 @@ fun pay(act: CheckoutActivity, checkout: Checkout) {
                 act.setImg(R.drawable.baseline_done_24)
             }
             else {
+                val response = gson.fromJson(readStream(inputStream),ErrorResponse::class.java)
+                println(response.errorMsg)
                 act.writeText("PAYMENT FAILED!")
                 act.appendText(readStream(inputStream))
                 act.setImg(R.drawable.outline_error_outline_24)
