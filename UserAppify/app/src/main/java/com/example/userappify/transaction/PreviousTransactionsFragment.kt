@@ -30,6 +30,22 @@ import kotlin.concurrent.thread
 class PreviousTransactionsFragment : Fragment() {
 
     var lastTransactions = arrayOf<Transaction>()
+
+    fun updateView() {
+        val listView = requireView().findViewById<ListView>(R.id.transactionListView)
+        val totalSpentTextView = requireView().findViewById<TextView>(R.id.totalAmountSpentTextView);
+        var totalSpent = calculateTotalSpent(lastTransactions);
+        totalSpentTextView.text = "Total: $totalSpent eur"
+        listView.adapter =
+            TransactionAdapter(requireContext(), lastTransactions)
+        listView.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, index, _ ->
+                val intent = Intent(context, TransactionDetailActivity::class.java)
+                intent.putExtra("transaction", lastTransactions[index])
+                startActivity(intent)
+            }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +82,7 @@ class PreviousTransactionsFragment : Fragment() {
     private fun onResponse(response: JSONObject, request: UserDataRequest) {
         val userDataResponse = Gson().fromJson(response.toString(),UserDataResponse::class.java)
         lastTransactions = userDataResponse.lastTransactions.toTypedArray()
+        updateView()
     }
 
     private fun calculateTotalSpent(transactions: Array<Transaction>): Double {
