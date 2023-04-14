@@ -54,7 +54,7 @@ namespace AcmeBackend
             // Summing prices and applying discount.
             double priceToPay = checkoutRequestForm.Products.Sum(p => p.Price);
             string? voucherId = checkoutRequestForm.VoucherId;
-            if (voucherId is not null)
+            if (voucherId is not null && voucherId != "null")
             {
                 if (!user.VoucherIds.Contains(voucherId))
                     return Results.UnprocessableEntity(new AcmeError("No such voucher"));

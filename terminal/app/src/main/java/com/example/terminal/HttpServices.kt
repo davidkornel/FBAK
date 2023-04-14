@@ -1,68 +1,51 @@
 package com.example.terminal
 
+import android.content.Context
+import android.util.Log
+import android.view.View
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.reflect.KFunction2
 
-private val gson = Gson()
 
-private fun readStream(input: InputStream): String {
-    var reader: BufferedReader? = null
-    var line: String?
-    val response = StringBuilder()
+/**
+ * checkout call to BE
+ */
+fun checkoutUser(
+    checkout: Checkout,
+    context: Context,
+    onResponse: KFunction2<JSONObject, CheckoutActivity, Unit>,
+    act: CheckoutActivity
+) {
+    val url = "http://10.0.2.2:5107/checkout"
     try {
-        reader = BufferedReader(InputStreamReader(input))
-        while (reader.readLine().also{ line = it } != null)
-            response.append(line)
-    }
-    catch (e: IOException) {
-        response.clear()
-        response.append("readStream: ${e.message}")
-    }
-    reader?.close()
-    return response.toString()
-}
-
-fun pay(act: CheckoutActivity, checkout: Checkout) {
-    val urlRoute = "/checkout"
-    val url = URL("http://10.0.2.2:5107$urlRoute")
-
-    var urlConnection: HttpURLConnection? = null
-    try {
-        urlConnection = (url.openConnection() as HttpURLConnection).apply {
-            doOutput = true
-            doInput = true
-            requestMethod = "POST"
-            setRequestProperty("Content-Type", "application/json")
-            var payload = gson.toJson(checkout)
-            useCaches = false
-            connectTimeout = 5000
-            with(outputStream) {
-                write(payload.toByteArray())
-                flush()
-                close()
-            }
-                // get response
-            if (responseCode == 200) {
-                val response = gson.fromJson(readStream(inputStream),Response::class.java)
-                act.writeText("PAYMENT SUCCESSFULL!")
-                act.appendText("Total paid ${response.totalAmountPaid} €")
-                act.setImg(R.drawable.baseline_done_24)
-            }
-            else {
-                val response = gson.fromJson(readStream(inputStream),ErrorResponse::class.java)
-                println(response.errorMsg)
+        val gson = Gson()
+        // Instantiate the RequestQueue.
+        val queue = Volley.newRequestQueue(context)
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST, url, JSONObject(gson.toJson(checkout)),
+            { response ->
+                onResponse(response, act)
+                println("Response: %s".format(response.toString()))
+            },
+            { error ->
+                println(error)
                 act.writeText("PAYMENT FAILED!")
-                act.appendText(readStream(inputStream))
                 act.setImg(R.drawable.outline_error_outline_24)
             }
-        }
-    }
-    catch (e: Exception) {
-        act.setImg(R.drawable.outline_error_outline_24)
-        act.writeText(e.toString())
-    }
-    urlConnection?.disconnect()
+        )
 
+// Add the request to the RequestQueue.
+        queue.add(jsonObjectRequest)
+    } catch (e: Exception) {
+        e.message?.let { Log.d("APP", it) }
+        throw e
+    }
 }
