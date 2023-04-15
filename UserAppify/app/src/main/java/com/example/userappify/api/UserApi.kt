@@ -64,6 +64,7 @@ fun getUserData(request: UserDataRequest, context: Context, onResponse: KFunctio
         val gson = Gson()
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(context)
+        Log.d("oggJson",gson.toJson(request))
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST, url, JSONObject(gson.toJson(request)),
             { response ->

@@ -61,7 +61,8 @@ class VoucherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val auth = activity?.let { AuthManager(it) }
         val userId = auth!!.getLoginUser()!!.id.toString()
-        val signedContent = signData(Gson().toJson(userId).toString())
+        val userIdToSign = UserDataRequestToSign(userId)
+        val signedContent = signData(Gson().toJson(userIdToSign).toString())
         var userDataRequest = UserDataRequest(signedContent,userId)
         this.context?.let { it1 ->
             getUserData(userDataRequest, it1, onResponse = this::onResponse, view)

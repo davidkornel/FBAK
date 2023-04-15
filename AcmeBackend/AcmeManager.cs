@@ -79,7 +79,7 @@ namespace AcmeBackend
             }
 
             // Saving the transaction.
-            var transaction = new Transaction(checkoutRequestForm.DiscountNow, checkoutRequestForm.Products, checkoutRequestForm.UserId, checkoutRequestForm.VoucherId);
+            var transaction = new Transaction(checkoutRequestForm.DiscountNow, checkoutRequestForm.Products, checkoutRequestForm.UserId, checkoutRequestForm.VoucherId,priceToPay);
             user.Transactions.Add(transaction);
 
             return Results.Ok(new CheckoutResponseForm(priceToPay));
@@ -92,7 +92,13 @@ namespace AcmeBackend
             var user = users[userDataRequestForm.UserId];
 
             // Verify signature.
-            if (!user.IsMessageValid(userDataRequestForm.UserId, userDataRequestForm.Signature))
+             var serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            var jsonObject = JsonSerializer.SerializeToNode(userDataRequestForm, serializeOptions)?.AsObject();
+            jsonObject?.Remove("signature");
+            if (!user.IsMessageValid(jsonObject?.ToJsonString(), userDataRequestForm.Signature))
                 return Results.UnprocessableEntity(new AcmeError("Invalid signature"));
 
             return Results.Ok(new UserDataResponseForm(user.VoucherIds.ToArray(), user.Transactions.ToArray()));
