@@ -16,7 +16,7 @@ class VoucherAdapter(private val ctx: Context, val vouchers: List<Voucher>) :
 
     private var _selectedIndex: Int = -1
 
-    fun setSelectedIndex(ind: Int){
+    fun setSelectedIndex(ind: Int) {
         _selectedIndex = ind
         notifyDataSetChanged()
     }
@@ -34,7 +34,13 @@ class VoucherAdapter(private val ctx: Context, val vouchers: List<Voucher>) :
             if (_selectedIndex != -1 && pos == _selectedIndex) {
                 isSelected = !isSelected
             }
-            if(isSelected)  row.setBackgroundColor(Color.BLUE) else row.setBackgroundColor(Color.WHITE)
+            if (isSelected) row.setBackgroundColor(
+                Color.rgb(
+                    187,
+                    134,
+                    252
+                )
+            ) else row.setBackgroundColor(Color.WHITE)
         }
         return row
     }

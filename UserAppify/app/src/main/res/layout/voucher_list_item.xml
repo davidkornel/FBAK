@@ -3,25 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp">
 
-  <TextView
-      android:id="@+id/voucherDiscount"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="@string/vouchers" />
+    android:descendantFocusability="blocksDescendants">
 
-  <TextView
-      android:id="@+id/voucherIsUsed"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="@string/vouchers" />
+
+    <TextView
+        android:id="@+id/voucherDiscount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:fontFamily="@font/gotham"
+        android:text="TextView"
+        android:textColor="#333333"
+        android:textFontWeight="300"
+        android:layout_margin="8dp"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/voucherIsUsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/gotham"
+        android:text="TextView"
+        android:textColor="#000000"
+        android:layout_margin="8dp"
+        android:textSize="14sp" />
 
 
 </LinearLayout>
