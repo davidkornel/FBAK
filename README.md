@@ -2,6 +2,20 @@
 
 Repository for the Mobile Computing course's group work. 
 
+## Registration example
+
+Note: It's case sensitive
+
+- Nickname: KarelNovak
+- Name: Karel
+- Surname: Novak
+- Email: karel@gmail.com
+- Password: @Karel
+- Card number: 1234123412341234
+- Expiration date: 02/24
+- CVV: 123
+ 
+
 ## Class diagram
 
 ![UML class(1)](https://user-images.githubusercontent.com/49610117/229872009-70458961-a4e1-473c-a2df-6f3712d35394.png)
