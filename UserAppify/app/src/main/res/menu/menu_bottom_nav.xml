@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_qr_reader"
-        android:title="@string/add_product"
-        android:icon="@drawable/ic_email_white_24dp"
-        android:enabled="true"/>
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="@string/add_product" />
     <item
         android:id="@+id/nav_previous_transactions"
-        android:title="@string/transactions"
-        android:icon="@drawable/ic_email_white_24dp"
-        android:enabled="true"/>
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="@string/transactions" />
     <item
         android:id="@+id/nav_vouchers"
-        android:title="@string/vouchers"
-        android:icon="@drawable/ic_email_white_24dp"
-        android:enabled="true"/>
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="@string/vouchers" />
     <item
         android:id="@+id/nav_cart"
-        android:title="@string/cart"
-        android:icon="@drawable/ic_email_white_24dp"
-        android:enabled="true"/>
+        android:enabled="true"
+        android:icon="@drawable/icons8_shopping_cart_72___"
+        android:title="@string/cart" />
 </menu>
