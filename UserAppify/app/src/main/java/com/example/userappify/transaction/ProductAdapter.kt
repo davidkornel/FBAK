@@ -22,7 +22,8 @@ class ProductAdapter(private val ctx: Context, val products: List<Product>) :
             false
         )
         with(products[pos]) {
-            row.findViewById<TextView>(R.id.productName).text = "$id Transaction"
+            row.findViewById<TextView>(R.id.productName).text =
+                "Product ${id.substring(0, 4)}..."
             row.findViewById<TextView>(R.id.productPrice).text = "$price eur"
         }
         return row
