@@ -20,10 +20,7 @@ class TransactionAdapter(private val ctx: Context, val transactions: Array<Trans
         )
         with(transactions[pos]) {
             row.findViewById<TextView>(R.id.transactionName).text = "Transaction"
-            var total = 0.0
-            for (product in products){
-                total += product.price
-            }
+            var total = totalPaid
             row.findViewById<TextView>(R.id.transactionPrice).text = "${total} eur"
         }
         return row

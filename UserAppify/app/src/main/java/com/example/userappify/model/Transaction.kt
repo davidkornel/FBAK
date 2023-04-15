@@ -6,5 +6,6 @@ data class Transaction (
     val discountNow: Boolean,
     val products: List<Product>,
     val voucherId: String?,
-    val userId: UUID
+    val userId: UUID,
+    val totalPaid: Double
 ) : java.io.Serializable

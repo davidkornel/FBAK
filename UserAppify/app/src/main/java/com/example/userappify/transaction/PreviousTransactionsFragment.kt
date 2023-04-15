@@ -72,7 +72,9 @@ class PreviousTransactionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val auth = activity?.let { AuthManager(it) }
         val userId = auth!!.getLoginUser()!!.id.toString()
-        val signedContent = signData(Gson().toJson(userId).toString())
+        val userIdToSign = UserDataRequestToSign(userId)
+        Log.d("idToJson",Gson().toJson(userIdToSign).toString())
+        val signedContent = signData(Gson().toJson(userIdToSign).toString())
         var userDataRequest = UserDataRequest(signedContent,userId)
 
         this.context?.let { it1 ->
@@ -88,9 +90,7 @@ class PreviousTransactionsFragment : Fragment() {
     private fun calculateTotalSpent(transactions: Array<Transaction>): Double {
         var total = 0.0
         for (transaction in transactions) {
-            for (product in transaction.products) {
-                total += product.price
-            }
+            total += transaction.totalPaid
         }
         return total
     }
