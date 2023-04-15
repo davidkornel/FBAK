@@ -9,9 +9,9 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="8dp"
-      android:elevation="4dp"
       app:cardBackgroundColor="#ffffffff"
-      app:cardCornerRadius="12dp">
+      app:cardElevation="0dp"
+      app:cardMaxElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,15 +22,22 @@
           android:id="@+id/transactionName"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:text="TextView" />
+          android:layout_weight="2"
+          android:fontFamily="@font/gotham"
+          android:text="TextView"
+          android:textColor="#333333"
+          android:textFontWeight="300"
+          android:textSize="14sp" />
 
       <TextView
           android:id="@+id/transactionPrice"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:text="TextView" />
+          android:fontFamily="@font/gotham"
+          android:text="TextView"
+          android:textColor="#000000"
+          android:textSize="14sp" />
     </LinearLayout>
 
   </androidx.cardview.widget.CardView>

@@ -35,7 +35,7 @@ class PreviousTransactionsFragment : Fragment() {
         val listView = requireView().findViewById<ListView>(R.id.transactionListView)
         val totalSpentTextView = requireView().findViewById<TextView>(R.id.totalAmountSpentTextView);
         var totalSpent = calculateTotalSpent(lastTransactions);
-        totalSpentTextView.text = "Total: $totalSpent eur"
+        totalSpentTextView.text = "Total: ${String.format("%.2f", totalSpent)} eur"
         listView.adapter =
             TransactionAdapter(requireContext(), lastTransactions)
         listView.onItemClickListener =
@@ -55,7 +55,7 @@ class PreviousTransactionsFragment : Fragment() {
         val listView = v.findViewById<ListView>(R.id.transactionListView)
         val totalSpentTextView = v.findViewById<TextView>(R.id.totalAmountSpentTextView);
         var totalSpent = calculateTotalSpent(lastTransactions);
-        totalSpentTextView.text = "Total: $totalSpent eur"
+        totalSpentTextView.text = "Total: ${String.format("%.2f", totalSpent)} eur"
         listView.adapter =
             TransactionAdapter(requireContext(), lastTransactions)
         listView.onItemClickListener =

@@ -21,7 +21,7 @@ class TransactionAdapter(private val ctx: Context, val transactions: Array<Trans
         with(transactions[pos]) {
             row.findViewById<TextView>(R.id.transactionName).text = "Transaction"
             var total = totalPaid
-            row.findViewById<TextView>(R.id.transactionPrice).text = "${total} eur"
+            row.findViewById<TextView>(R.id.transactionPrice).text = "${String.format("%.2f", total)} eur"
         }
         return row
     }

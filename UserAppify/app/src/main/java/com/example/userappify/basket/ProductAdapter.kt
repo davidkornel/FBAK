@@ -32,7 +32,7 @@ class ProductAdapter(private val ctx: Context, val products: ArrayList<NamedProd
         )
         with(products[pos]) {
             row.findViewById<TextView>(R.id.tv_lst_name).text = name
-            row.findViewById<TextView>(R.id.tv_lst_price).text = price.toString()
+            row.findViewById<TextView>(R.id.tv_lst_price).text = "${String.format("%.2f", price)} eur"
             row.findViewById<ImageButton>(R.id.btn_rm_prod).setOnClickListener{
                 viewModel.removeProduct(products[pos])
                 notifyDataSetChanged()

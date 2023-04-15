@@ -24,10 +24,6 @@ class TransactionDetailActivity : AppCompatActivity() {
         listView.adapter =
             ProductAdapter(this, transaction.products)
         val totalTextView = findViewById<TextView>(R.id.transactionDetailTotal)
-        var total = 0.0
-        for (product in transaction.products) {
-            total += product.price
-        }
-        totalTextView.text = "Total: $total eur"
+        totalTextView.text = "Total: ${String.format("%.2f", transaction.totalPaid)} eur"
     }
 }

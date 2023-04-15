@@ -6,7 +6,7 @@ Repository for the Mobile Computing course's group work.
 
 Note: It's case sensitive
 
-- Nickname: KarelNovak
+- Nickname: Karelnovak
 - Name: Karel
 - Surname: Novak
 - Email: karel@gmail.com
