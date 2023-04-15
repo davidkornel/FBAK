@@ -67,6 +67,7 @@ class VoucherFragment : Fragment() {
             getUserData(userDataRequest, it1, onResponse = this::onResponse, view)
         }
         viewModel.products.observe(viewLifecycleOwner) {
+            voucherAdapter.notifyDataSetChanged()
         }
     }
     private fun onResponse(response: JSONObject, request: UserDataRequest) {
