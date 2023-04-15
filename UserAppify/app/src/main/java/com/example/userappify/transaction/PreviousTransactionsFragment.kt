@@ -16,7 +16,7 @@ import com.example.userappify.api.getUserData
 import com.example.userappify.api.registerUser
 import com.example.userappify.auth.AuthManager
 import com.example.userappify.databinding.FragmentVoucherBinding
-import com.example.userappify.deconding_utils.signContent
+import com.example.userappify.deconding_utils.signData
 import com.example.userappify.model.*
 import com.google.gson.Gson
 import org.json.JSONObject
@@ -72,7 +72,7 @@ class PreviousTransactionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val auth = activity?.let { AuthManager(it) }
         val userId = auth!!.getLoginUser()!!.id.toString()
-        val signedContent = signContent(Gson().toJson(userId).toString())
+        val signedContent = signData(Gson().toJson(userId).toString())
         var userDataRequest = UserDataRequest(signedContent,userId)
 
         this.context?.let { it1 ->
