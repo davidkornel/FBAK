@@ -9,7 +9,7 @@
 
     public record CardInfo(string Number, string Cvc, string ExpirationDate);
     public record Product(string Id, double Price);
-    public record Transaction(bool? DiscountNow, Product[] Products, string UserId, string? VoucherId);
+    public record Transaction(bool? DiscountNow, Product[] Products, string UserId, string? VoucherId, double TotalPaid);
 
     public record AcmeError(string ErrorMessage);
 }
