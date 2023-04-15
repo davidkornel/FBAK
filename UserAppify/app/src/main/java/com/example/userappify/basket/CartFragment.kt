@@ -51,6 +51,7 @@ class CartFragment : Fragment() {
         listView.adapter = productAdapter
 
         v.findViewById<Button>(R.id.btn_checkout).setOnClickListener {
+            val auth = activity?.let { AuthManager(it) }
             val checkoutToSign = getCheckoutToSign(cbDiscount.isChecked, viewModel.products.value as ArrayList<NamedProduct>,
                 auth!!.getLoginUser()!!.id, viewModel.getSelectedVoucher()?.id)
             Log.d("content",Gson().toJson(checkoutToSign).toString())
